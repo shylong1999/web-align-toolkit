@@ -1,0 +1,184 @@
+<div class="modal fade" id="running" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h4 class="modal-title" id="modalTitle">Modal Header</h4>
+                <strong>Parameters</strong>
+                <ul>
+                    <li>Input format :<span id="inputFormat"></span></li>
+                    <li>Output format :<span id="outputFormat"></span></li>
+                </ul>
+            </div>
+            <div class="modal-body">
+                <pre id="log">					</pre>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="credits" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modalTitle">Credits</h4>
+            </div>
+            <div class="modal-body">
+                <h3>
+                    WAT allows to align parallel texts using various aligning engines:
+                </h3>
+                <blockquote>
+                    <ul>
+                        <li>JAM : Written in Perl. Allows to align more than two languages at the same time.</li>
+                        <li>Alinea Lite : Written in Prolog, a long time ago. Slow but robust.</li>
+                        <li>
+                            <a href="https://sourceforge.net/projects/aligner/">LF Aligner</a> : a project leaded by
+                            Andras Farkas, based on Daniel Varga's <a href="https://github.com/danielvarga/hunalign">Hunalign</a>.
+                        </li>
+                        <li>
+                            <a href="http://rali.iro.umontreal.ca/rali/?q=en/yasa">YASA</a> : Originally created by
+                            Philippe Langlais, it was reimplemented by Alexandre Patry. It was reborn as yasa as part of
+                            improvements made during Fethi Lamraoui's masters thesis.
+                        </li>
+                    </ul>
+                </blockquote>
+                <h3>References</h3>
+                <p>Kraif O. (2001) Exploitation des cognats dans les systèmes d’alignement bi-textuel : architecture et
+                    évaluation, <i>TAL</i> 42 :3, ATALA, Paris, pp. 833-867.
+                    <a href="pdf/Kraif - TAL 2001.pdf">(pdf)</a>
+                </p>
+                <p>Kraif Olivier (2015) Multi-alignement vs bi-alignement : à plusieurs, c’est mieux ! , <i>Actes de
+                        TALN 2015, 22ème Conférence sur le Traitement Automatique des Langues Naturelles</i>, Caen, 22-25
+                    juin 2015, pp. 255-266
+                    <a href="http://www.atala.org/taln_archives/TALN/TALN-2015/taln-2015-long-022.pdf">(pdf)</a>
+                </p>
+                <p>Lamraoui, F., and P. Langlais (2013) "Yet Another Fast, Robust and Open Source Sentence Aligner. Time
+                    to Reconsider Sentence Alignment?", <i>XIV Machine Translation Summit</i>, Nice, France.
+                    <a href="http://www.mt-archive.info/10/MTS-2013-Lamraoui.pdf">(pdf)</a>
+                </p>
+                <p>Varga, D., Németh, L., Halácsy, P., Kornai, A., Trón, V., Nagy, V. (2005). Parallel corpora for
+                    medium density languages. In <i>Proceedings of the RANLP 2005</i>, pages 590-596.
+                    <a href="/danielvarga/hunalign/blob/master/www.kornai.com/Papers/ranlp05parallel.pdf">(pdf)</a>
+                </p>
+
+                <h3>Web design</h3>
+                <p>Built with the <a href="http://getbootstrap.com/">Bootstrap</a> CSS framework and Icons from <a
+                            href="http://glyphicons.com/">Glyphicons</a>.
+                </p>
+                <p>File Upload Widget imported from <a href="https://blueimp.github.io/jQuery-File-Upload/">jQuery-File-Upload</a>.
+                </p>
+                <p>File Tree Widget imported from <a href="https://www.abeautifulsite.net/jquery-file-tree">jQueryFileTree</a>.
+                </p>
+
+                <h3>Language identification</h3>
+                <p>Automatic language identification uses <a href="https://github.com/richtr/guessLanguage.js/">guessLanguage.js</a>
+                    library</p>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="help" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modalTitle">Help</h4>
+            </div>
+            <div class="modal-body">
+                <h3>
+                    Some explanations about the file naming scheme...
+                </h3>
+
+                <p>
+                    When you upload various files on the site, you have to follow a strict naming scheme, in order to
+                    allow the system to recognize what files are corresponding with each other, and what are the
+                    involved languages.
+                    By default, the naming scheme used by the system uses the following conventions : <span
+                            style="color:blue">NAME</span>.<span class="color2">LL</span>.<span class="color3">EXT</span> :
+                </p>
+                <ul>
+                    <li><span style="color:blue">NAME</span> is the common substring shared by all the files that
+                        correspond to a same text
+                    </li>
+                    <li><span class="color2">LL</span> is the language suffix (for instance 'fr' for French, 'en' for
+                        English , 'de' for German, etc. You can use your own codes, for instance 'f1','f2','f3' if you
+                        align three French versions of a same text.
+                    </li>
+                    <li><span class="color3">EXT</span> indicates which format is used (txt=raw text, ces=cesAna text,
+                        xml=xml format, etc.)
+                    </li>
+                </ul>
+                For instance : <span style="color:blue">balzac</span>.<span class="color2">fr</span>.<span
+                        class="color3">txt</span>, <span style="color:blue">balzac</span>.<span
+                        class="color2">en</span>.<span class="color3">txt</span>
+                <p></p>
+                <p>
+                    If you use a different naming scheme, you will have to redefine some <a
+                            href="https://perldoc.perl.org/perlretut.html">Perl regular expressions</a> in advanced
+                    parameters :
+                </p>
+                <ul>
+                    <li><strong>File name pattern</strong>: this pattern describes which files have to be processed. The
+                        first capturing group (first parentheses) indicates the common name string.
+                    </li>
+                    <li><strong>Language pattern</strong>: when using YASA or Alinea, in complement to file name
+                        pattern, this regex pattern describes where is defined the language in the file names. The
+                        capturing group defines the language code in the name. By default, the language string has two
+                        characters, but it may be changed.
+                    </li>
+                    <li><strong>Aligning file name</strong>: this template indicates how Yasa or Alinea should name the
+                        aligned file. The default value is : '{{commonName}}.{{l1}}-{{l2}}.{{ext}}'
+                    </li>
+                </ul>
+                <p></p>
+                <h3>How are structured output directories ?</h3>
+                <p>
+                    In the output files tab, you will find all the uploaded files in the root directory.
+                    Every time you run an aligning session, a new <strong>output_*</strong> directory is created : this
+                    directory contains all the output files.
+                </p>
+                <ul>
+                    <li>By default, when using LF Aligner, output dir contains TMX and CSV formats</li>
+                    <li>When using YASA, output dir contains the various bilingual YASA outputs in CES format, and a TMX
+                        version. If you align more than two languages, the transitively merged alignment is produced
+                        only for TMX.
+                    </li>
+                    <li>When using Jam, output dir either the bilingual and multi-alignment in TMX format.</li>
+                    <li>When using Alinea lite, output dir contains only a bilingual output in TMX format.</li>
+                </ul>
+                <p></p>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="clear" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modalTitle">Deleting previous output directories</h4>
+            </div>
+            <div class="modal-body" id="clearLog">
+            </div>
+        </div>
+    </div>
+</div>

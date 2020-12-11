@@ -1,0 +1,116 @@
+<link href="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table.min.css" rel="stylesheet">
+
+<script src="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table.min.js"></script>
+
+<table
+  id="table"
+  data-toggle="table"
+  data-pagination="true"
+  data-search="true"
+  data-show-refresh="true"
+  data-show-toggle="true"
+  data-show-fullscreen="true"
+  data-show-columns="true"
+  data-show-columns-toggle-all="true"
+  data-detail-view="true"
+  data-show-export="true"
+  data-click-to-select="true"
+  data-detail-formatter="detailFormatter"
+  data-minimum-count-columns="2"
+  data-show-pagination-switch="true"
+  data-pagination="true"
+  data-id-field="id"
+  data-page-list="[10, 25, 50, 100, all]"
+  data-show-footer="true"
+  data-side-pagination="server">
+  <thead>
+    <tr>
+      <th data-field="id">ID</th>
+      <th data-field="name">Item Name</th>
+      <th data-field="price">Item Price</th>
+    </tr>
+  </thead>
+</table>
+
+<script>
+  var $table = $('#table')
+
+  function getData(number, size) {
+    $.get('https://examples.wenzhixin.net.cn/examples/bootstrap_table/data', {
+      offset: (number - 1) * size,
+      limit: size
+    }, function (res) {
+      $table.bootstrapTable('load', res)
+    })
+  }
+
+  $(function() {
+    $table.on('page-change.bs.table', function (e, number, size) {
+      getData(number, size)
+    })
+    var options = $table.bootstrapTable('getOptions')
+    getData(options.pageNumber, options.pageSize)
+  })
+</script>
+
+
+TRONG DO CAU TRUC URL PHAI DAP UNG:
+https://examples.wenzhixin.net.cn/examples/bootstrap_table/data?offset=0&limit=10
+Bien offset la gia tri dau tien, bien limit la gia tri moi trang web
+Cau truc data tra ve:
+{
+  "total": 800, => so luong ban ghi
+  "totalNotFiltered": 800,=> so luong ban ghi
+  "rows": [
+    {
+      "id": 0,
+      "name": "Item 0",
+      "price": "$0"
+    },
+    {
+      "id": 1,
+      "name": "Item 1",
+      "price": "$1"
+    },
+    {
+      "id": 2,
+      "name": "Item 2",
+      "price": "$2"
+    },
+    {
+      "id": 3,
+      "name": "Item 3",
+      "price": "$3"
+    },
+    {
+      "id": 4,
+      "name": "Item 4",
+      "price": "$4"
+    },
+    {
+      "id": 5,
+      "name": "Item 5",
+      "price": "$5"
+    },
+    {
+      "id": 6,
+      "name": "Item 6",
+      "price": "$6"
+    },
+    {
+      "id": 7,
+      "name": "Item 7",
+      "price": "$7"
+    },
+    {
+      "id": 8,
+      "name": "Item 8",
+      "price": "$8"
+    },
+    {
+      "id": 9,
+      "name": "Item 9",
+      "price": "$9"
+    }
+  ]
+}

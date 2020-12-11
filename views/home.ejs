@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Force latest IE rendering engine or ChromeFrame if installed -->
+    <!--[if IE]>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <![endif]-->
+    <meta charset="utf-8">
+    <title>Web Align Toolkit</title>
+    <meta name="description" content="Parallel text alignment.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap styles -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <!-- Generic page styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- blueimp Gallery styles -->
+    <link rel="stylesheet" href="//blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
+    <!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+    <link rel="stylesheet" href="/css/jquery.fileupload.css">
+    <link rel="stylesheet" href="/css/jquery.fileupload-ui.css">
+    <!-- CSS of jquery File Tree -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css"> <!-- font -->
+    <link rel="stylesheet" href="/css/jQueryFileTree.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/styles/atelier-cave.light.min.css">
+
+    <!-- CSS adjustments for browsers with JavaScript disabled -->
+    <noscript>
+        <link rel="stylesheet" href="/css/jquery.fileupload-noscript.css">
+    </noscript>
+    <noscript>
+        <link rel="stylesheet" href="/css/jquery.fileupload-ui-noscript.css">
+    </noscript>
+
+
+</head>
+
+<body class="skin-blue">
+    <!-- Navigation-->
+    <%- include('header'); -%>
+    <div class="container">
+        <h1><span class="color1">Web</span> <span class="color2">Align</span> <span class="color3">Toolkit</span></h1>
+
+        <h2 class="lead">Online parallel texts aligner and format converter</h2>
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" class="no_outline" href="#direct">Align texts</a></li>
+            <li><a data-toggle="tab" class="no_outline" href="#simple">Upload files and run</a></li>
+            <li><a data-toggle="tab" class="no_outline" href="#output" id="outputTab">Output files</a></li>
+            <li><a data-toggle="tab" class="no_outline" href="#advanced">Advanced parameters</a></li>
+        </ul>
+        <br>
+        <div class="tab-content">
+            <div id="direct" class="tab-pane fade in active">
+                <h3>
+                    <span class="color1">W</span><span class="color2">A</span><span class="color3">T</span> allows to align
+                    parallel texts using various aligning engines:
+                </h3>
+                <blockquote>
+                    <ul>
+                        <li>LF Aligner: a fast and reliable state-of-the-art aligner based on Hunalign, which integrates
+                            various bilingual lexicons (and which can also align more than two texts at once)
+                        </li>
+                        <li>YASA: a fast and reliable state-of-the-art aligner (reliable and very fast)</li>
+                        <li>JAM: a multi-aligner that can align more than two texts at once (beta version that needs some
+                            bug fix)
+                        </li>
+                        <li>Alinea Lite: a simple aligner written in Prolog that uses cognates and sentence lengths (robust
+                            but slow)
+                        </li>
+                        <li>Note: when providing various version of the same text, in one language, and using LF Aligner,
+                            the <span class="color3">BLEU</span> score is computed. The first text is considered as the
+                            hypothesis, and the other ones as the reference translations. The <span
+                                    class="color3">BLEU</span> score is available in a separate file in the output
+                            directory.
+                        </li>
+                    </ul>
+                </blockquote>
+                <br>
+                <p>Just paste source and target texts in the textarea below. To align more than two texts, just use the
+                    "Upload files and run" tab</p>
+                <!-- The file upload form used as target for the file upload widget -->
+                <form id="textarea" action="" method="POST">
+                    <div class="container">
+                        <div class="row" id="languageForms">
+                            <div class="col-sm-6 languageForm" id="divLanguage1">
+                                <label for="l1">Language 1 text:</label>
+                                <textarea class="form-control" rows="10" id="l1" name="l1"></textarea>
+                                <div class="form-group">
+                                    <label for="l1Language" id="l1LanguageLabel">Language:</label><span
+                                            style="color:blue;display:none;" id="l1LanguageGuessed"> (Guessed)</span>
+                                    <div class="combobox-container combobox-selected"><input type="hidden" value="ab"
+                                                                                             name="">
+                                        <!--                                    <div class="input-group"><input type="text" autocomplete="off" id="l1Language"-->
+                                        <!--                                                                    class="form-control combobox"> <span-->
+                                        <!--                                            class="input-group-addon dropdown-toggle" data-dropdown="dropdown"> <span-->
+                                        <!--                                            class="caret"></span> <span-->
+                                        <!--                                            class="glyphicon glyphicon-remove"></span> </span></div>-->
+                                    </div>
+                                    <select class="form-control combobox" id="l1Language" style="display: none;">
+                                        <option value="ab">Abkhazian (ab)</option>
+                                        <option value="af">Afrikaans (af)</option>
+                                        <option value="ar">Arabic (ar)</option>
+                                        <option value="az">Azerbaijani (az)</option>
+                                        <option value="be">Belarusian (be)</option>
+                                        <option value="bg">Bulgarian (bg)</option>
+                                        <option value="bn">Bengali (bn)</option>
+                                        <option value="bo">Tibetan (bo)</option>
+                                        <option value="br">Breton (br)</option>
+                                        <option value="ca">Catalan, Valencian (ca)</option>
+                                        <option value="ceb">Cebuano (ceb)</option>
+                                        <option value="cs">Czech (cs)</option>
+                                        <option value="cy">Welsh (cy)</option>
+                                        <option value="da">Danish (da)</option>
+                                        <option value="de">German (de)</option>
+                                        <option value="el">Modern Greek (el)</option>
+                                        <option value="en">English (en)</option>
+                                        <option value="eo">Esperanto (eo)</option>
+                                        <option value="es">Spanish, Castilian (es)</option>
+                                        <option value="et">Estonian (et)</option>
+                                        <option value="eu">Basque (eu)</option>
+                                        <option value="fa">Persian (fa)</option>
+                                        <option value="fi">Finnish (fi)</option>
+                                        <option value="fo">Faroese (fo)</option>
+                                        <option value="fr">French (fr)</option>
+                                        <option value="fy">Western Frisian (fy)</option>
+                                        <option value="gd">Scottish Gaelic, Gaelic (gd)</option>
+                                        <option value="gl">Galician (gl)</option>
+                                        <option value="gu">Gujarati (gu)</option>
+                                        <option value="ha">Hausa (ha)</option>
+                                        <option value="haw">Hawaiian (haw)</option>
+                                        <option value="he">Hebrew (he)</option>
+                                        <option value="hi">Hindi (hi)</option>
+                                        <option value="hr">Croatian (hr)</option>
+                                        <option value="hu">Hungarian (hu)</option>
+                                        <option value="hy">Armenian (hy)</option>
+                                        <option value="id">Indonesian (id)</option>
+                                        <option value="is">Icelandic (is)</option>
+                                        <option value="it">Italian (it)</option>
+                                        <option value="ja">Japanese (ja)</option>
+                                        <option value="ka">Georgian (ka)</option>
+                                        <option value="kk">Kazakh (kk)</option>
+                                        <option value="km">Central Khmer (km)</option>
+                                        <option value="kn">Kannada (kn)</option>
+                                        <option value="ko">Korean (ko)</option>
+                                        <option value="ku">Kurdish (ku)</option>
+                                        <option value="ky">Kirghiz, Kyrgyz (ky)</option>
+                                        <option value="la">Latin (la)</option>
+                                        <option value="lo">Lao (lo)</option>
+                                        <option value="lt">Lithuanian (lt)</option>
+                                        <option value="lv">Latvian (lv)</option>
+                                        <option value="mg">Malagasy (mg)</option>
+                                        <option value="mk">Macedonian (mk)</option>
+                                        <option value="ml">Malayalam (ml)</option>
+                                        <option value="mn">Mongolian (mn)</option>
+                                        <option value="mr">Marathi (mr)</option>
+                                        <option value="ms">Malay (macrolanguage) (ms)</option>
+                                        <option value="nd">North Ndebele (nd)</option>
+                                        <option value="ne">Nepali (ne)</option>
+                                        <option value="nl">Dutch, Flemish (nl)</option>
+                                        <option value="nn">Norwegian Nynorsk (nn)</option>
+                                        <option value="no">Norwegian (no)</option>
+                                        <option value="nso">Pedi, Northern Sotho, Sepedi (nso)</option>
+                                        <option value="or">Oriya (or)</option>
+                                        <option value="pa">Panjabi, Punjabi (pa)</option>
+                                        <option value="pl">Polish (pl)</option>
+                                        <option value="ps">Pushto, Pashto (ps)</option>
+                                        <option value="pt">Portuguese (pt)</option>
+                                        <option value="pt-BR">Portuguese (Brazil) (pt-BR)</option>
+                                        <option value="pt-PT">Portuguese (Portugal) (pt-PT)</option>
+                                        <option value="ro">Romanian, Moldavian, Moldovan (ro)</option>
+                                        <option value="ru">Russian (ru)</option>
+                                        <option value="sa">Sanskrit (sa)</option>
+                                        <option value="sh">Serbo-Croatian (sh)</option>
+                                        <option value="si">Sinhala, Sinhalese (si)</option>
+                                        <option value="sk">Slovak (sk)</option>
+                                        <option value="sl">Slovenian, Slovene (sl)</option>
+                                        <option value="so">Somali (so)</option>
+                                        <option value="sq">Albanian (sq)</option>
+                                        <option value="sr">Serbian (sr)</option>
+                                        <option value="sv">Swedish (sv)</option>
+                                        <option value="sw">Swahili (macrolanguage) (sw)</option>
+                                        <option value="ta">Tamil (ta)</option>
+                                        <option value="te">Telugu (te)</option>
+                                        <option value="th">Thai (th)</option>
+                                        <option value="tl">Tagalog (tl)</option>
+                                        <option value="tlh">Klingon, tlhIngan-Hol (tlh)</option>
+                                        <option value="tn">Tswana, Setswana (tn)</option>
+                                        <option value="tr">Turkish (tr)</option>
+                                        <option value="ts">Tsonga (ts)</option>
+                                        <option value="tw">Twi (tw)</option>
+                                        <option value="uk">Ukrainian (uk)</option>
+                                        <option value="ur">Urdu (ur)</option>
+                                        <option value="uz">Uzbek (uz)</option>
+                                        <option value="ve">Venda (ve)</option>
+                                        <option value="vi">Vietnamese (vi)</option>
+                                        <option value="xh">Xhosa (xh)</option>
+                                        <option value="zh">Chinese (zh)</option>
+                                        <option value="zh-TW">Chinese (Taiwan) (zh-TW)</option>
+                                        <option value="zu">Zulu (zu)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 languageForm" id="divLanguage2">
+                                <label for="l2">Language 2 text:</label>
+                                <textarea class="form-control" rows="10" id="l2" name="l2"></textarea>
+                                <div class="form-group">
+                                    <label for="l2Language" id="l2LanguageLabel">Language:</label><span
+                                            style="color:blue;display:none;" id="l2LanguageGuessed"> (Guessed)</span>
+                                    <div class="combobox-container combobox-selected"><input type="hidden" value="ab"
+                                                                                             name="">
+                                        <!--                                    <div class="input-group"><input type="text" autocomplete="off" id="l2Language"-->
+                                        <!--                                                                    class="form-control combobox"> <span-->
+                                        <!--                                            class="input-group-addon dropdown-toggle" data-dropdown="dropdown"> <span-->
+                                        <!--                                            class="caret"></span> <span-->
+                                        <!--                                            class="glyphicon glyphicon-remove"></span> </span></div>-->
+                                    </div>
+                                    <select class="form-control combobox" id="l2Language" style="display: none;">
+                                        <option value="ab">Abkhazian (ab)</option>
+                                        <option value="af">Afrikaans (af)</option>
+                                        <option value="ar">Arabic (ar)</option>
+                                        <option value="az">Azerbaijani (az)</option>
+                                        <option value="be">Belarusian (be)</option>
+                                        <option value="bg">Bulgarian (bg)</option>
+                                        <option value="bn">Bengali (bn)</option>
+                                        <option value="bo">Tibetan (bo)</option>
+                                        <option value="br">Breton (br)</option>
+                                        <option value="ca">Catalan, Valencian (ca)</option>
+                                        <option value="ceb">Cebuano (ceb)</option>
+                                        <option value="cs">Czech (cs)</option>
+                                        <option value="cy">Welsh (cy)</option>
+                                        <option value="da">Danish (da)</option>
+                                        <option value="de">German (de)</option>
+                                        <option value="el">Modern Greek (el)</option>
+                                        <option value="en">English (en)</option>
+                                        <option value="eo">Esperanto (eo)</option>
+                                        <option value="es">Spanish, Castilian (es)</option>
+                                        <option value="et">Estonian (et)</option>
+                                        <option value="eu">Basque (eu)</option>
+                                        <option value="fa">Persian (fa)</option>
+                                        <option value="fi">Finnish (fi)</option>
+                                        <option value="fo">Faroese (fo)</option>
+                                        <option value="fr">French (fr)</option>
+                                        <option value="fy">Western Frisian (fy)</option>
+                                        <option value="gd">Scottish Gaelic, Gaelic (gd)</option>
+                                        <option value="gl">Galician (gl)</option>
+                                        <option value="gu">Gujarati (gu)</option>
+                                        <option value="ha">Hausa (ha)</option>
+                                        <option value="haw">Hawaiian (haw)</option>
+                                        <option value="he">Hebrew (he)</option>
+                                        <option value="hi">Hindi (hi)</option>
+                                        <option value="hr">Croatian (hr)</option>
+                                        <option value="hu">Hungarian (hu)</option>
+                                        <option value="hy">Armenian (hy)</option>
+                                        <option value="id">Indonesian (id)</option>
+                                        <option value="is">Icelandic (is)</option>
+                                        <option value="it">Italian (it)</option>
+                                        <option value="ja">Japanese (ja)</option>
+                                        <option value="ka">Georgian (ka)</option>
+                                        <option value="kk">Kazakh (kk)</option>
+                                        <option value="km">Central Khmer (km)</option>
+                                        <option value="kn">Kannada (kn)</option>
+                                        <option value="ko">Korean (ko)</option>
+                                        <option value="ku">Kurdish (ku)</option>
+                                        <option value="ky">Kirghiz, Kyrgyz (ky)</option>
+                                        <option value="la">Latin (la)</option>
+                                        <option value="lo">Lao (lo)</option>
+                                        <option value="lt">Lithuanian (lt)</option>
+                                        <option value="lv">Latvian (lv)</option>
+                                        <option value="mg">Malagasy (mg)</option>
+                                        <option value="mk">Macedonian (mk)</option>
+                                        <option value="ml">Malayalam (ml)</option>
+                                        <option value="mn">Mongolian (mn)</option>
+                                        <option value="mr">Marathi (mr)</option>
+                                        <option value="ms">Malay (macrolanguage) (ms)</option>
+                                        <option value="nd">North Ndebele (nd)</option>
+                                        <option value="ne">Nepali (ne)</option>
+                                        <option value="nl">Dutch, Flemish (nl)</option>
+                                        <option value="nn">Norwegian Nynorsk (nn)</option>
+                                        <option value="no">Norwegian (no)</option>
+                                        <option value="nso">Pedi, Northern Sotho, Sepedi (nso)</option>
+                                        <option value="or">Oriya (or)</option>
+                                        <option value="pa">Panjabi, Punjabi (pa)</option>
+                                        <option value="pl">Polish (pl)</option>
+                                        <option value="ps">Pushto, Pashto (ps)</option>
+                                        <option value="pt">Portuguese (pt)</option>
+                                        <option value="pt-BR">Portuguese (Brazil) (pt-BR)</option>
+                                        <option value="pt-PT">Portuguese (Portugal) (pt-PT)</option>
+                                        <option value="ro">Romanian, Moldavian, Moldovan (ro)</option>
+                                        <option value="ru">Russian (ru)</option>
+                                        <option value="sa">Sanskrit (sa)</option>
+                                        <option value="sh">Serbo-Croatian (sh)</option>
+                                        <option value="si">Sinhala, Sinhalese (si)</option>
+                                        <option value="sk">Slovak (sk)</option>
+                                        <option value="sl">Slovenian, Slovene (sl)</option>
+                                        <option value="so">Somali (so)</option>
+                                        <option value="sq">Albanian (sq)</option>
+                                        <option value="sr">Serbian (sr)</option>
+                                        <option value="sv">Swedish (sv)</option>
+                                        <option value="sw">Swahili (macrolanguage) (sw)</option>
+                                        <option value="ta">Tamil (ta)</option>
+                                        <option value="te">Telugu (te)</option>
+                                        <option value="th">Thai (th)</option>
+                                        <option value="tl">Tagalog (tl)</option>
+                                        <option value="tlh">Klingon, tlhIngan-Hol (tlh)</option>
+                                        <option value="tn">Tswana, Setswana (tn)</option>
+                                        <option value="tr">Turkish (tr)</option>
+                                        <option value="ts">Tsonga (ts)</option>
+                                        <option value="tw">Twi (tw)</option>
+                                        <option value="uk">Ukrainian (uk)</option>
+                                        <option value="ur">Urdu (ur)</option>
+                                        <option value="uz">Uzbek (uz)</option>
+                                        <option value="ve">Venda (ve)</option>
+                                        <option value="vi">Vietnamese (vi)</option>
+                                        <option value="xh">Xhosa (xh)</option>
+                                        <option value="zh">Chinese (zh)</option>
+                                        <option value="zh-TW">Chinese (Taiwan) (zh-TW)</option>
+                                        <option value="zu">Zulu (zu)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <center>
+                                <button type="button" class="btn btn-default btn-sm" id="delLanguage"><span
+                                            class="glyphicon glyphicon-minus-sign"></span> Remove one language
+                                </button>
+                                <button type="button" class="btn btn-default btn-sm" id="addLanguage"><span
+                                            class="glyphicon glyphicon-plus-sign"></span> Add one language
+                                </button>
+                            </center>
+                        </div>
+                        <br>
+                        <div class="row row-eq-height">
+                            <div class="col-sm-1 " style="vertical-align:middle">Align with</div>
+                            <div class="col-sm-2 ">
+                                <select id="aligner_direct" name="aligner_direct" class="form-control">
+                                    <option>LF Aligner</option>
+                                    <option>YASA</option>
+                                    <option>JAM</option>
+                                    <option>Alinea Lite</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-1">
+                                <button id="go_direct" class="btn btn-lg btn-primary">Go</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <div id="simple" class="tab-pane fade">
+                <h3>
+                    <span class="color1">W</span><span class="color2">A</span><span class="color3">T</span> allows to align
+                    parallel
+                    texts using various aligning engines:
+                </h3>
+                <blockquote>
+                    <ul>
+                        <li>LF Aligner: a fast and reliable state-of-the-art aligner based on Hunalign, which integrates
+                            various bilingual lexicons (and which can also align more than two texts at once)
+                        </li>
+                        <li>YASA: a fast and reliable state-of-the-art aligner (reliable and very fast)</li>
+                        <li>JAM: a multi-aligner that can align more than two texts at once (beta version that needs some
+                            bug fix)
+                        </li>
+                        <li>Alinea Lite: a simple aligner written in Prolog that uses cognates and sentence lengths (robust
+                            but slow)
+                        </li>
+                        <li>Note: when providing various version of the same text, in one language, and using LF Aligner,
+                            the <span class="color3">BLEU</span> score is computed. The first text is considered as the
+                            hypothesis, and the other ones as the reference translations. The <span
+                                    class="color3">BLEU</span> score is available in a separate file in the output
+                            directory.
+                        </li>
+                    </ul>
+                </blockquote>
+                <br>
+                <p>Just drag and drop files below. Corresponding files must share the same name, and differ only by the
+                    language extension. Example : <span style="color:blue">balzac</span>.<span
+                            class="color2">fr</span>.<span class="color3">txt</span>, <span style="color:blue">balzac</span>.<span
+                            class="color2">en</span>.<span class="color3">txt</span></p>
+                <p>Please use the following extensions : <strong>txt</strong> for plain text, <strong>ttg</strong> for
+                    treetagger output, <strong>ces</strong> for cesAna or cesAlign format, <strong>xml</strong> for XML
+                    format. A <strong>zip</strong> archive may be uploaded to process many files at once.</p>
+
+                <!-- The file upload form used as target for the file upload widget -->
+                <form id="fileupload" action="" method="POST" enctype="multipart/form-data" class="">
+                    <!-- Redirect browsers with JavaScript disabled to the origin page -->
+                    <noscript><input type="hidden" name="redirect" value="https://blueimp.github.io/jQuery-File-Upload/">
+                    </noscript>
+                    <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+                    <div class="row fileupload-buttonbar">
+                        <div class="col-lg-7">
+                            <!-- The fileinput-button span is used to style the file input field as button -->
+                            <span></span>
+                            <span class="btn btn-success fileinput-button">
+							<i class="glyphicon glyphicon-plus"></i>
+							<span>Add files...</span>
+							<input type="file" name="files[]" multiple="">
+						</span>
+                            <button type="submit" class="btn btn-primary start">
+                                <i class="glyphicon glyphicon-upload"></i>
+                                <span>Start upload</span>
+                            </button>
+                            <button type="reset" class="btn btn-warning cancel">
+                                <i class="glyphicon glyphicon-ban-circle"></i>
+                                <span>Cancel upload</span>
+                            </button>
+                            <button type="button" class="btn btn-danger delete">
+                                <i class="glyphicon glyphicon-trash"></i>
+                                <span>Delete</span>
+                            </button>
+                            <input type="checkbox" class="toggle">
+                            <!-- The global file processing state -->
+                            <span class="fileupload-process"></span>
+                        </div>
+                        <!-- The global progress state -->
+                        <div class="col-lg-5 fileupload-progress fade">
+                            <!-- The global progress bar -->
+                            <div class="progress progress-striped active" role="progressbar" aria-valuemin="0"
+                                 aria-valuemax="100">
+                                <div class="progress-bar progress-bar-success" style="width:0%;"></div>
+                            </div>
+                            <!-- The extended global progress state -->
+                            <div class="progress-extended">&nbsp;</div>
+                        </div>
+                    </div>
+                    <!-- The table listing the files available for upload/download -->
+                    <table role="presentation" class="table table-striped">
+                        <tbody class="files"></tbody>
+                    </table>
+
+                    <div class="form-group form-inline input-group-lg">
+                        Input format :
+                        <select id="formatIn" name="formatIn" class="form-control">
+                            <option>txt</option>
+                            <option>ces</option>
+                            <option>ttg</option>
+                            <option>xml</option>
+                        </select>
+
+                        Output format :
+                        <select id="formatOut" name="formatOut" class="form-control">
+                            <option>tmx</option>
+                            <option>txt</option>
+                            <option>ces</option>
+                            <option>csv</option>
+                        </select>
+
+                        <select id="action" name="action" class="form-control">
+                            <option>Align</option>
+                            <option>Convert</option>
+                            <option>Merge</option>
+                        </select>
+
+                        <span id="selectAligner" class="input-group-lg">
+						with
+						<select id="aligner" name="aligner" class="form-control">
+							<option>JAM</option>
+							<option>Alinea Lite</option>
+							<option>LF Aligner</option>
+							<option>YASA</option>
+						</select>
+					</span>
+
+
+                        Languages :
+                        <input type="text" class="form-control" style="width:150px" id="languages"
+                               aria-describedby="languagesHelp" placeholder="for instance : en fr" value="">
+
+                        <button id="go" type="submit" class="btn btn-lg btn-primary">Go</button>
+                    </div>
+                </form>
+                <br>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Notes</h3>
+                    </div>
+                    <div class="panel-body">
+                        <ul>
+                            <li>The maximum file size for uploads in this version is <strong>999 KB</strong>.</li>
+                            <li>Only <strong>TXT, TTG (treetagger), XML (segmented and/or tokenized text), TMX, CES</strong>
+                                files are allowed.
+                            </li>
+                            <li>Uploaded files will be deleted automatically after <strong>1 day</strong>.</li>
+                            <li>You can <strong>drag &amp; drop</strong> files from your desktop on this webpage (see <a
+                                        href="https://github.com/blueimp/jQuery-File-Upload/wiki/Browser-support">Browser
+                                    support</a>).
+                            </li>
+                            <li>Please refer to [olivier kraif At univ-grenoble-alpes fr] for more information.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div id="output" class="tab-pane fade">
+                <h3>Below, find the aligner outputs.</h3>
+                <blockquote>
+                    Click on the file to open it in the browser. To download it, right click -&gt; "save link target". The
+                    input files appears at root directory.<br>
+                    The "seg" subdirectory contains the segmented input files (when the option "Split paragraphs into
+                    sentences" is selected).
+                </blockquote>
+
+
+                <div id="filetree">
+
+                </div>
+
+                <br>
+
+                <button id="clear_output" type="button" class="btn btn-danger delete">
+                    <i class="glyphicon glyphicon-trash"></i>
+                    <span>Delete previous output directories</span>
+                </button>
+
+
+            </div>
+
+
+            <div id="advanced" class="tab-pane fade">
+                <blockquote>
+                    The following parameters have to be adjusted if you use different naming convention, file encodings,
+                    etc.
+                </blockquote>
+                <form>
+                    <div class="form-group">
+                        <label for="splitSent" aria-describedby="encodingHelp">Split paragraphs into sentences (for txt
+                            format only)</label>
+                        &nbsp;<input type="checkbox" checked="" class="class=" id="splitSent"
+                                     aria-describedby="splitSentHelp" value="1"><br>
+                        <small id="splitSentHelp" class="form-text text-muted">The paragraphs are split according to [.?!] +
+                            upperCase and [;:] marks (using an abreviation dictionary).</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="fileEncoding" aria-describedby="encodingHelp">File encoding</label>
+                        <select class="form-control" id="fileEncoding">
+                            <option>guess</option>
+                            <option>utf8</option>
+                            <option>iso-8859-1</option>
+                            <option>cp1252</option>
+                            <option>utf16</option>
+                        </select>
+                        <small id="encodingHelp" class="form-text text-muted">The encoding of the input files.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="filePattern">File name pattern</label>
+                        <input type="text" class="form-control" id="filePattern" aria-describedby="filePatternHelp"
+                               value="(.*)[.]\w\w(-\w\w)*[.]\w+$">
+                        <small id="filePatternHelp" class="form-text text-muted">The string pattern that describes how file
+                            names are made. The default value corresponds to names such as : <strong>alice</strong>.en.txt,
+                            <strong>alice</strong>.fr.txt, <strong>alice</strong>.es.txt</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="languagePattern">Language pattern</label>
+                        <input type="text" class="form-control" id="languagePattern" aria-describedby="languagePatternHelp"
+                               value="[.](\w\w)[.]\w\w\w">
+                        <small id="languagePatternHelp" class="form-text text-muted">When using YASA or Alinea. In
+                            complement to file name pattern, this regex pattern describes where is defined the language in
+                            the file names. The capturing parentheses define the language code in the name. The default
+                            value corresponds to names such as : alice.<strong>en</strong>.txt, alice.<strong>fr</strong>.txt,
+                            alice.<strong>es</strong>.txt.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="alignFileName">Align file name</label>
+                        <input type="text" class="form-control" id="alignFileName" aria-describedby="alignFileNameHelp"
+                               value="'{{commonName}}.{{l1}}-{{l2}}.{{ext}}'">
+                        <small id="alignFileNameHelp" class="form-text text-muted">The string that describes how to build
+                            the output aligned file. The default value corresponds to names such as :
+                            alice.en-fr.tmx</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="radiusAroundAnchor">Radius of the search space around anchor points (only for
+                            YASA)</label>
+                        <input type="text" class="form-control" id="radiusAroundAnchor"
+                               aria-describedby="radiusAroundAnchorHelp" value="100">
+                        <small id="radiusAroundAnchorHelp" class="form-text text-muted">For not fairly parallel texts, with
+                            large gaps, the search space have to be enlarged and the radius has to be raised.</small>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    <!-- The blueimp Gallery widget -->
+    <div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls" data-filter=":even">
+        <div class="slides"></div>
+        <h3 class="title"></h3>
+        <a class="prev">‹</a>
+        <a class="next">›</a>
+        <a class="close">×</a>
+        <a class="play-pause"></a>
+        <ol class="indicator"></ol>
+    </div>
+
+    <script id="template-upload" type="text/x-tmpl">
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+    <tr class="template-upload fade">
+        <td>
+            <span class="preview"></span>
+        </td>
+        <td>
+            <p class="name">{%=file.name%}</p>
+            <strong class="error text-danger"></strong>
+        </td>
+        <td>
+            <p class="size">Processing...</p>
+            <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-bar progress-bar-success" style="width:0%;"></div></div>
+        </td>
+        <td>
+            {% if (!i && !o.options.autoUpload) { %}
+                <button class="btn btn-primary start" disabled>
+                    <i class="glyphicon glyphicon-upload"></i>
+                    <span>Start</span>
+                </button>
+            {% } %}
+            {% if (!i) { %}
+                <button class="btn btn-warning cancel">
+                    <i class="glyphicon glyphicon-ban-circle"></i>
+                    <span>Cancel</span>
+                </button>
+            {% } %}
+        </td>
+    </tr>
+{% } %}
+
+</script>
+    <!-- The template to display files available for download -->
+    <script id="template-download" type="text/x-tmpl">
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+    <tr class="template-download fade">
+        <td>
+            <span class="preview">
+                {% if (file.thumbnailUrl) { %}
+                    <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" data-gallery><img src="{%=file.thumbnailUrl%}"></a>
+                {% } %}
+            </span>
+        </td>
+        <td>
+            <p class="name">
+                {% if (file.url) { %}
+                    <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" {%=file.thumbnailUrl?'data-gallery':''%}>{%=file.name%}</a>
+                {% } else { %}
+                    <span>{%=file.name%}</span>
+                {% } %}
+            </p>
+            {% if (file.error) { %}
+                <div><span class="label label-danger">Error</span> {%=file.error%}</div>
+            {% } %}
+        </td>
+        <td>
+            <span class="size">{%=o.formatFileSize(file.size)%}</span>
+        </td>
+        <td>
+            {% if (file.deleteUrl) { %}
+                <button class="btn btn-danger delete" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}"{% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>
+                    <i class="glyphicon glyphicon-trash"></i>
+                    <span>Delete</span>
+                </button>
+                <input type="checkbox" name="delete" value="1" class="toggle">
+            {% } else { %}
+                <button class="btn btn-warning cancel">
+                    <i class="glyphicon glyphicon-ban-circle"></i>
+                    <span>Cancel</span>
+                </button>
+            {% } %}
+        </td>
+    </tr>
+{% } %}
+
+</script>
+
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="/js/jquery.min.js"></script>
+    <!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
+    <script src="/js/jquery.ui.widget.js"></script>
+    <!-- The Templates plugin is included to render the upload/download listings -->
+    <script src="//blueimp.github.io/JavaScript-Templates/js/tmpl.min.js"></script>
+    <!-- Bootstrap JS is not required, but included for the responsive demo navigation -->
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <!-- blueimp Gallery script -->
+    <script src="//blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js"></script>
+    <!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+    <script src="/js/jquery.iframe-transport.js"></script>
+    <!-- The basic File Upload plugin -->
+    <script src="/js/jquery.fileupload.js"></script>
+    <!-- The File Upload processing plugin -->
+    <script src="/js/jquery.fileupload-process.js"></script>
+    <!-- The File Upload validation plugin -->
+    <script src="/js/jquery.fileupload-validate.js"></script>
+    <!-- The File Upload user interface plugin -->
+    <script src="/js/jquery.fileupload-ui.js"></script>
+    <!-- The main application script -->
+    <script src="/js/main.js"></script>
+    <!-- The XDomainRequest Transport is included for cross-domain file deletion for IE 8 and IE 9 -->
+    <!--[if (gte IE 8)&(lt IE 10)]>
+    <script src="/js/cors/jquery.xdr-transport.js"></script>
+    <![endif]-->
+    <script src="/js/jQueryFileTree.easing.js"></script>
+    <script src="/js/jQueryFileTree.js"></script>
+    <script src="/js/_languageData.js"></script>
+    <script src="/js/guessLanguage.js"></script>
+    <script src="/js/bootstrap-combobox.js"></script>
+    <script src="/js/js.cookie.js"></script>
+    <script src="/js/myscript.js"></script>
+
+
+    <%- include('modal'); -%>
+
+    <ul class="typeahead typeahead-long dropdown-menu"></ul>
+    <ul class="typeahead typeahead-long dropdown-menu"></ul>
+</body>
+</html>
