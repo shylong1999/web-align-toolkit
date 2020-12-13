@@ -9,7 +9,7 @@ var config = require('./config/config');
 var restrict = require('./middle-wares/restrict'),
     handle404MDW = require('./middle-wares/handle404');
 
-var homeRouter = require('./routes/homeRouter')
+var homeRouter = require('./routes/homeRouter');
 var app = express();
 
 app.set('views', path.join(__dirname, 'views'));
@@ -36,7 +36,7 @@ app.use(session({
 app.get('/', (req, res) => {
     res.render('login');
 });
-app.get('/home', (req, res) => {
+app.get('/home',restrict, (req, res) => {
     res.render('home');
 });
 

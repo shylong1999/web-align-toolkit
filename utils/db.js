@@ -1,38 +1,51 @@
-const { Pool, Client } = require('pg');
+var mysql = require('mysql');
 var util = require('util');
 
 var config = require('../config/config');
 var logger = require('../utils/logger');
-exports.load = (sql,param) => {
+exports.load = sql => {
     return new Promise((resolve, reject) => {
-        var connection = new Client(config.dbOptions);
-        connection.connect();
+        var connection = mysql.createConnection(config.dbOptions);
+        connection.connect((err) => {
+            if (err) {
+                logger.error(util.inspect(err, { showHidden: false, depth: null }));
+                return;
+            }
+        });
 
-        connection.query(sql,param, (error, rs) => {
+        connection.query(sql, (error, rows, fields) => {
             if (error) {
-                logger.error(error.message);
+                logger.error(util.inspect(err, { showHidden: false, depth: null }));
                 reject(error);
             } else {
-                resolve(rs.rows);
+                resolve(rows);
             }
+
             connection.end();
         });
     });
 }
 
-exports.save = (sql,param) => {
+exports.save = sql => {
     return new Promise((resolve, reject) => {
-        var connection = new Client(config.dbOptions);
-        connection.connect();
+        var connection = mysql.createConnection(config.dbOptions);
 
-        connection.query(sql,param, function(error, rs) {
+        connection.connect((err) => {
+            if (err) {
+                logger.error(util.inspect(err, { showHidden: false, depth: null }));
+                return;
+            }
+        });
+
+        connection.query(sql, function(error, value) {
             if (error) {
-                logger.error(error.message);
+                logger.error(util.inspect(err, { showHidden: false, depth: null }));
                 reject(error);
             } else {
-                resolve(rs.rows);
+                resolve(value);
             }
+
             connection.end();
         });
     });
-}
+} 

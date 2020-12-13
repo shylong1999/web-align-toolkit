@@ -17,6 +17,7 @@
 ## Cài đặt:
 + npm i express
 + npm i express-session
++ npm i mysql
 + npm i crypto-js
 + npm i ejs
 + npm i pg

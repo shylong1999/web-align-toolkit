@@ -1,10 +1,11 @@
 var db = require('../utils/db');
 const logger = require('../utils/logger');
 
-// exports.loadAll = () => {
-//     var sql = 'select * from vi_tri';
-//     return db.load(sql);
-// }
+exports.login = (user) => {
+    var sql = `select * from users u where u.username = '${user.username}' and u.password = '${user.password}'`;
+    console.log(db)
+    return db.load(sql);
+};
 // exports.loadByOption = (option) => {
 //     var sql;
 //     if (option.search) {
