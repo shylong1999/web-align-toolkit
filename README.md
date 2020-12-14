@@ -17,6 +17,9 @@
 ## Cài đặt:
 + npm i express
 + npm i express-session
++ npm i child-process
++ npm i readline
++ npm i fs
 + npm i mysql
 + npm i crypto-js
 + npm i ejs

@@ -2,10 +2,61 @@ var express = require('express');
 var restrict = require('../middle-wares/restrict');
 var homeRepo = require('../repos/homeRepo');
 var router = express.Router();
-
+var fs = require('fs');
+// var sleep = require('sleep');
+var readline = require('readline');
 router.get('/login', (req, res) => {
     res.redirect('/home');
 });
+
+router.get('/callFile', (req, res) => {
+    var spawn = require("child_process").spawn;
+    var process = spawn('python', ["./"]);
+
+    process.stdout.on('data', function (data) {
+        res.send(data.toString());
+    })
+
+});
+
+router.get('/readFile', (req, res) => {
+
+
+    var promise = new Promise(function (resolve, reject) {
+
+        var data = [];
+        var idx = 1;
+        let rl = readline.createInterface({
+            input: fs.createReadStream('./public/txt/myfile.txt', 'utf8'),
+            console: false
+        });
+        rl.on('line', function (line, lineCount, byteCount) {
+            var obj = {
+                "line": idx,
+                "lang": line.substring(0,2),
+                "score": line.split('\t')[0].split('_')[2],
+                "text": line.split('\t')[1]
+            }
+            data.push(obj);
+            idx++;
+        })
+        .on('close', function () {
+            var json = JSON.stringify(data);
+            resolve(data); // resolve(json); may be??
+        })
+        .on('error', function (e) {
+            console.log("error", e);
+        });
+    });
+
+    promise.then((resolveResult) => {
+        // console.log(resolveResult);
+        res.json(resolveResult);
+    });
+
+
+});
+
 router.post('/login', (req, res) => {
     var user = {
         username: req.body.username,
