@@ -10,6 +10,7 @@ var restrict = require('./middle-wares/restrict'),
     handle404MDW = require('./middle-wares/handle404');
 
 var homeRouter = require('./routes/homeRouter');
+var alignRouter = require('./routes/alignRouter');
 var app = express();
 
 app.set('views', path.join(__dirname, 'views'));
@@ -41,6 +42,7 @@ app.get('/home',restrict, (req, res) => {
 });
 
 app.use('/h', homeRouter);
+app.use('/align', alignRouter);
 
 app.use(handle404MDW);
 

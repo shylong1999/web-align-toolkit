@@ -30,29 +30,43 @@ router.get('/readFile', (req, res) => {
             input: fs.createReadStream('./public/txt/myfile.txt', 'utf8'),
             console: false
         });
+        let rl2 = readline.createInterface({
+            input: fs.createReadStream('./public/txt/out_km1.txt', 'utf8'),
+            console: false
+        });
+
         rl.on('line', function (line, lineCount, byteCount) {
             var obj = {
-                "line": idx,
-                "lang": line.substring(0,2),
-                "score": line.split('\t')[0].split('_')[2],
-                "text": line.split('\t')[1]
+                "stt": idx,
+                "line": line.substring(0,1),
+                "lang": 'vi-km',
+                "score": line.split('\t')[1],
+                "lang1": line.split('\t')[2]
             }
             data.push(obj);
             idx++;
         })
-        .on('close', function () {
-            var json = JSON.stringify(data);
-            resolve(data); // resolve(json); may be??
-        })
-        .on('error', function (e) {
-            console.log("error", e);
-        });
+            .on('close', function () {
+                var i = 0;
+                rl2.on('line', function (line, lineCount, byteCount) {
+                    data[i].lang2 = line.split('\t')[2] ;
+                    i++;
+                }).on('close', function (e) {
+                    console.log(i);
+                    var json = JSON.stringify(data);
+                    resolve(data); // resolve(json); may be??
+                });
+            })
+            .on('error', function (e) {
+                console.log("error", e);
+            });
     });
 
     promise.then((resolveResult) => {
         // console.log(resolveResult);
         res.json(resolveResult);
     });
+
 
 
 });
