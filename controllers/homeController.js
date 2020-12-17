@@ -3,6 +3,7 @@ var restrict = require('../middle-wares/restrict');
 var homeRepo = require('../repos/homeRepo');
 var router = express.Router();
 var fs = require('fs');
+const path = require('path');
 // var sleep = require('sleep');
 var readline = require('readline');
 router.get('/login', (req, res) => {
@@ -18,6 +19,31 @@ router.get('/callFile', (req, res) => {
     })
 
 });
+
+router.post('/writeToFile', (req, res) => {
+    var viText = req.body.viText;
+    var kmText = req.body.kmText;
+
+    let lyrics = 'But still I\'m having memories of high speeds when the cops crashed\n' +
+        'As I laugh, pushin the gas while my Glocks blast\n' +
+        'We was young and we was dumb but we had heart';
+    fs.writeFile('./public/txt/vi_test.txt', viText, (err) => {
+        if (err) throw err;
+
+        fs.writeFile('./public/txt/out_km1.txt', kmText, (err) => {
+            if (err) throw err;
+
+            res.json({
+                code: 200,
+                message: 'OK'
+            });
+
+        });
+    });
+
+
+});
+
 
 router.get('/readFile', (req, res) => {
 
@@ -53,7 +79,6 @@ router.get('/readFile', (req, res) => {
         // console.log(resolveResult);
         res.json(resolveResult);
     });
-
 
 
 });

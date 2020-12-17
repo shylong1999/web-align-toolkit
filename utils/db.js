@@ -26,7 +26,7 @@ exports.load = sql => {
     });
 }
 
-exports.save = sql => {
+exports.save = (sql,value) => {
     return new Promise((resolve, reject) => {
         var connection = mysql.createConnection(config.dbOptions);
 
@@ -37,7 +37,7 @@ exports.save = sql => {
             }
         });
 
-        connection.query(sql, function(error, value) {
+        connection.query(sql,value, function(error, value) {
             if (error) {
                 logger.error(util.inspect(err, { showHidden: false, depth: null }));
                 reject(error);
