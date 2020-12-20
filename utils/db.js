@@ -15,7 +15,7 @@ exports.load = sql => {
 
         connection.query(sql, (error, rows, fields) => {
             if (error) {
-                logger.error(util.inspect(err, { showHidden: false, depth: null }));
+                logger.error(util.inspect(error, { showHidden: false, depth: null }));
                 reject(error);
             } else {
                 resolve(rows);
@@ -39,7 +39,7 @@ exports.save = (sql,value) => {
 
         connection.query(sql,value, function(error, value) {
             if (error) {
-                logger.error(util.inspect(err, { showHidden: false, depth: null }));
+                logger.error(util.inspect(error, { showHidden: false, depth: null }));
                 reject(error);
             } else {
                 resolve(value);
@@ -62,7 +62,7 @@ exports.saveAll = (sql,params) => {
 
         connection.query(sql, [params],  function(error, value) {
             if (error) {
-                logger.error(util.inspect(err, { showHidden: false, depth: null }));
+                logger.error(util.inspect(error, { showHidden: false, depth: null }));
                 reject(error);
             } else {
                 resolve(value);

@@ -1,0 +1,372 @@
+.menu li:hover {
+    background: #A0A0A0;
+}
+
+.menu li a:hover {
+    color: blue;
+}
+
+table {
+    width: 100%;
+    height: auto;
+    font-family: arial, sans-serif;
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-top: 1px solid #dee2e6;
+    text-align: center;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #f2f2f2;
+}
+
+.detele {
+    width: 60%;
+    height: 30px;
+    font-size: 16px;
+    margin-left: 10px;
+}
+
+.detele-gh {
+    width: auto;
+    height: 30px;
+    font-size: 16px;
+}
+
+.content {
+    width: 100%;
+    height: auto;
+    margin-top: 2%;
+}
+
+.content-1 {
+    width: 80%;
+    height: auto;
+    margin-left: 10%;
+    border: 2px solid #ddd;;
+    padding-left: 15%;
+    border-radius: 3px
+
+}
+
+.website {
+    margin-right: 10px;
+    margin-left: 10px;
+    font-size: 18px;
+}
+
+.leangue {
+    width: 15%;
+    height: 30px;
+    margin-right: 20px;
+}
+
+.modal {
+    margin: 0% 3% 0% 3%;
+    width: 100%;
+}
+
+.modal-table {
+    width: 90%;
+    height: auto;
+    text-align: center;
+    font-size: 18px;
+    margin-top: 15px;
+}
+
+.phantrang {
+    margin-left: 20px;
+    width: 90%;
+    height: auto;
+    margin: 0% 3% 0% 3%;
+}
+
+.input1 {
+    width: 70px;
+    height: 30px;
+    text-align: center;
+    margin-right: 15px;
+}
+
+.skip {
+    width: 100px;
+    height: 32px;
+}
+
+.extract {
+    width: 10%;
+    height: 40px;
+}
+
+.phan {
+    float: right;
+    margin-top: 10px;
+}
+
+.pvg {
+    list-style: none;
+    float: left;
+}
+
+.export-data {
+    width: 5%;
+    height: 40px;
+    float: right;
+    margin-right: 54px;
+}
+
+.url {
+    width: 20%;
+    height: 26px;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+}
+
+.export-data {
+    background-color: #808080;
+    width: auto;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    display: inline-block;
+    font-family: 'BenchNine', Arial, sans-serif;
+    font-size: 1em;
+    font-size: 18px;
+    line-height: 1em;
+    margin: 10px 35px;
+    outline: none;
+    padding: 12px 30px 10px;
+    position: relative;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.export-data:before,
+.export-data:after {
+    border-color: transparent;
+    -webkit-transition: all 0.25s;
+    transition: all 0.25s;
+    border-style: solid;
+    border-width: 0;
+    content: "";
+    height: 24px;
+    position: absolute;
+    width: 24px;
+}
+
+.export-data:before {
+    border-color: #808080;
+    border-top-width: 2px;
+    left: 0px;
+    top: -5px;
+}
+
+.export-data:after {
+    border-bottom-width: 2px;
+    border-color: #808080;
+    bottom: -5px;
+    right: 0px;
+}
+
+.export-data:hover,
+.export-data.hover {
+    background-color: #808080;
+}
+
+.export-data:hover:before,
+.export-data.hover:before,
+.export-data:hover:after,
+.export-data.hover:after {
+    height: 100%;
+    width: 100%;
+}
+
+.export {
+    background-color: #808080;
+    width: auto;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    display: inline-block;
+    font-family: 'BenchNine', Arial, sans-serif;
+    font-size: 1em;
+    font-size: 18px;
+    line-height: 1em;
+    margin: 10px 35px;
+    outline: none;
+    padding: 12px 30px 10px;
+    position: relative;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.export:before,
+.export:after {
+    border-color: transparent;
+    -webkit-transition: all 0.25s;
+    transition: all 0.25s;
+    border-style: solid;
+    border-width: 0;
+    content: "";
+    height: 24px;
+    position: absolute;
+    width: 24px;
+}
+
+.export:before {
+    border-color: #808080;
+    border-top-width: 2px;
+    left: 0px;
+    top: -5px;
+}
+
+.export:after {
+    border-bottom-width: 2px;
+    border-color: #808080;
+    bottom: -5px;
+    right: 0px;
+}
+
+.export:hover,
+.export.hover {
+    background-color: #808080;
+}
+
+.export:hover:before,
+.export.hover:before,
+.export:hover:after,
+.export.hover:after {
+    height: 100%;
+    width: 100%;
+}
+
+.btncon {
+    background-color: #808080;
+    width: 50%;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    display: inline-block;
+    font-family: 'BenchNine', Arial, sans-serif;
+    font-size: 1em;
+    font-size: 18px;
+    line-height: 1em;
+    outline: none;
+    position: relative;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.btncon:before,
+.btncon:after {
+    border-color: transparent;
+    -webkit-transition: all 0.25s;
+    transition: all 0.25s;
+    border-style: solid;
+    border-width: 0;
+    content: "";
+    height: 24px;
+    position: absolute;
+    width: 24px;
+}
+
+.btncon:before {
+    border-color: #808080;
+    border-top-width: 2px;
+    left: 0px;
+    top: -5px;
+}
+
+.btncon:after {
+    border-bottom-width: 2px;
+    border-color: #808080;
+    bottom: -5px;
+    right: 0px;
+}
+
+.btncon:hover,
+.btncon.hover {
+    background-color: #808080;
+}
+
+.btncon:hover:before,
+.btncon.hover:before,
+.btncon:hover:after,
+.btncon.hover:after {
+    height: 100%;
+    width: 100%;
+}
+
+.btncon-gh {
+    background-color: #808080;
+    width: auto;
+    height: 15%;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    display: inline-block;
+    font-family: 'BenchNine', Arial, sans-serif;
+    font-size: 1em;
+    font-size: 18px;
+    line-height: 1em;
+    outline: none;
+    position: relative;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.btncon-gh:before,
+.btncon-gh:after {
+    border-color: transparent;
+    -webkit-transition: all 0.25s;
+    transition: all 0.25s;
+    border-style: solid;
+    border-width: 0;
+    content: "";
+    height: 24px;
+    position: absolute;
+    width: 24px;
+}
+
+.btncon-gh:before {
+    border-color: #808080;
+    border-top-width: 2px;
+    left: 0px;
+    top: -5px;
+}
+
+.btncon-gh:after {
+    border-bottom-width: 2px;
+    border-color: #808080;
+    bottom: -5px;
+    right: 0px;
+}
+
+.btncon-gh:hover,
+.btncon-gh.hover {
+    background-color: #808080;
+}
+
+.btncon-gh:hover:before,
+.btncon-gh.hover:before,
+.btncon-gh:hover:after,
+.btncon-gh.hover:after {
+    height: 100%;
+    width: 100%;
+}
+
+.modal-dialog {
+    margin-left: 15%;
+}
+
+.modal-content {
+    margin-left: 15%;
+    height: 500px;
+}

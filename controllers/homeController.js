@@ -1,24 +1,137 @@
 var express = require('express');
 var restrict = require('../middle-wares/restrict');
 var homeRepo = require('../repos/homeRepo');
+var alignRepo = require('../repos/alignRepo');
 var router = express.Router();
 var fs = require('fs');
 const path = require('path');
+const {PythonShell} = require('python-shell');
 // var sleep = require('sleep');
+
 var readline = require('readline');
 router.get('/login', (req, res) => {
     res.redirect('/home');
 });
 
 router.get('/callFile', (req, res) => {
-    var spawn = require("child_process").spawn;
-    var process = spawn('python', ["./"]);
+    // var basePath = `/home/nghialuan/longut-align-toolkit/SentenceAlignment/`;
+    var basePath = `/home/nghialuan/huong/KC-4.0/kc_senalign/`;
+    var thres = '0.8';
+    let options = {
+        mode: 'text',
+        pythonOptions: ['-u'], // get print results in real-time
+        scriptPath: basePath, //If you are having python_test.py script in same folder, then it's optional.
+        args: ['-s', basePath+'vi.txt','-t',basePath+'km.txt','-o',basePath+'vi_km.txt','-lang','km', '-thres', '0.6'] //An argument which can be accessed in the script using sys.argv[1]
+    };
 
-    process.stdout.on('data', function (data) {
-        res.send(data.toString());
-    })
+
+    PythonShell.run('senalign.py', options, function (err, result){
+        if (err) {
+
+            console.log(err);
+            res.json({
+                code: 400,
+                message: "Thất bại"
+            });
+        }
+        // if (err) throw err;
+        // result is an array consisting of messages collected
+        //during execution of script.
+        console.log('result: ', result);
+        // if(result){
+
+        // }
+        res.json({
+            code: 200,
+            message: "Thành công"
+        })
+    });
 
 });
+
+
+router.get('/callTextAlign', (req, res) => {
+    // var basePath = `/home/nghialuan/longut-align-toolkit/SentenceAlignment/`;
+    var basePath = `/home/nghialuan/huong/textalignment/`;
+    let options = {
+        mode: 'text',
+        pythonOptions: ['-u'], // get print results in real-time
+        scriptPath: basePath, //If you are having python_test.py script in same folder, then it's optional.
+        args: [basePath+'vn.txt',basePath+'khmer.txt','km'] //An argument which can be accessed in the script using sys.argv[1]
+    };
+
+
+    PythonShell.run('document_alignment.py', options, function (err, result){
+        if (err) {
+
+            console.log(err);
+            res.json({
+                code: 400,
+                message: "Thất bại"
+            });
+        }
+        // if (err) throw err;
+        // result is an array consisting of messages collected
+        //during execution of script.
+        console.log('result: ', result);
+        // if(result){
+
+        // }
+        res.json({
+            code: 200,
+            message: "Thành công"
+        })
+    });
+
+});
+
+
+
+// router.post('/writeToFile', (req, res) => {
+//     var viText = req.body.viText;
+//     var kmText = req.body.kmText;
+//     var basePath = `/home/nghialuan/longut-align-toolkit/SentenceAlignment/`;
+//     fs.writeFile(basePath+'vi.txt', viText, (err) => {
+//         if (err) throw err;
+//
+//         fs.writeFile(basePath+'km.txt', kmText, (err) => {
+//             if (err) throw err;
+//
+//
+//
+//             let options = {
+//                 mode: 'text',
+//                 pythonOptions: ['-u'], // get print results in real-time
+//                 scriptPath: basePath, //If you are having python_test.py script in same folder, then it's optional.
+//                 args: ['-s', basePath+'vi.txt','-t',basePath+'km.txt','-o',basePath+'vi_km.txt','-lang','km', '-thres', '0.8'] //An argument which can be accessed in the script using sys.argv[1]
+//             };
+//
+//
+//             PythonShell.run('senalign.py', options, function (err, result){
+//                 if (err) {
+//                     console.log(err);
+//                     res.send({
+//                         code: 400,
+//                         message: "Error"
+//                     })
+//                 }
+//
+//                 console.log('result: ', result);
+//                 if(result){
+//                     res.send({
+//                         code: 200,
+//                         message: "Thành công"
+//                     })
+//                 }
+//
+//             });
+//
+//
+//         });
+//     });
+// });
+
+
 
 router.post('/writeToFile', (req, res) => {
     var viText = req.body.viText;
@@ -31,7 +144,12 @@ router.post('/writeToFile', (req, res) => {
         if (err) throw err;
 
         fs.writeFile('./public/txt/out_km1.txt', kmText, (err) => {
-            if (err) throw err;
+            if (err) {
+                res.json({
+                    code: 400,
+                    message: 'Error'
+                });
+            }
 
             res.json({
                 code: 200,
@@ -59,12 +177,15 @@ router.get('/readFile', (req, res) => {
             var obj = {
                 "line": idx,
                 "lang": 'vi-km',
-                "score": line.split('\t')[0],
+                "score": (parseFloat(line.split('\t')[0]) * 100).toFixed(2),
                 "lang1": line.split('\t')[1],
                 "lang2": line.split('\t')[2],
             }
-            data.push(obj);
-            idx++;
+            if (obj.score > 0.8 && obj.lang1 && obj.lang2){
+                data.push(obj);
+                idx++;
+            }
+
         })
             .on('close', function () {
                 var json = JSON.stringify(data);
@@ -77,10 +198,27 @@ router.get('/readFile', (req, res) => {
 
     promise.then((resolveResult) => {
         // console.log(resolveResult);
-        res.json(resolveResult);
+        var values = [];
+        if (resolveResult){
+            resolveResult.forEach(function (obj) {
+                var item = [obj.lang1,obj.lang2,obj.score,1];
+                values.push(item);
+            })
+            alignRepo.addMultiple(values).then(function () {
+                res.json({
+                    code: 200,
+                    message: 'Thành công',
+                });
+            },function (err) {
+                res.json({
+                    code: 400,
+                    message: 'Error',
+                });
+            });
+        }
+        // var value = [obj.lang1, obj.lang2, obj.scope, 1];
+
     });
-
-
 });
 
 router.post('/login', (req, res) => {
