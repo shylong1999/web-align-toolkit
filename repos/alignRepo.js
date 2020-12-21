@@ -28,6 +28,15 @@ exports.sortDelete = (id) => {
     return db.save(query);
 };
 
+
+exports.isChecked = (id) => {
+    console.log("obj",id);
+    var sql = "UPDATE ?? SET ?? = ? WHERE ?? = ?";
+    let query = mysql.format(sql, ["sen_align_data", "isCheck",1,"id",id]);
+    return db.save(query);
+};
+
+
 exports.deleteRow = (id) => {
     var sql = "DELETE FROM ?? WHERE ?? = ?";
     let query = mysql.format(sql, ["sen_align_data", "id", id]);

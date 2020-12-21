@@ -59,7 +59,8 @@ exports.deleteMulti = (ids) => {
     return db.save(query);
 }
 exports.copyItem = (ids) => {
-    var sql = `INSERT ?? SELECT * FROM ?? WHERE ?? IN `+ ids;
+    var sql = `INSERT ?? SELECT id,lang1,lang2,scope,user_id,create_date,update_time,delete_date FROM ?? WHERE ?? IN `+ ids;
     let query = mysql.format(sql, ["data_align","sen_align_data","id"]);
+    console.log(query)
     return db.save(query);
 }

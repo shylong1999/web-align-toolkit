@@ -398,16 +398,55 @@ function loadData() {
         console.log(rows.length);
         for (let i = 0; i < rows.length; i++) {
             console.log(rows[i])
-            ids.push(rows[i].id);
+            checkRow('align/checkRow',rows[i].id);
+            ids.push({id:rows[i].id});
         }
-        // if (rows){
-        //     rows.forEach(function (row) {
-        //         ids.push(row.id);
-        //     })
-        // }
-        console.log(ids);
+        var obj ={
+            data : ids
+        }
+
+        copyItem('align/senAlign/copyItem',obj,table);
+        // console.log(ids);
+
+
     })
 
+}
+
+function copyItem(URL,ids,table) {
+    $.ajax({
+        url: URL,
+        type: "POST",
+        data: ids,
+        success: function (response) {
+            if (response.code === 200) {
+                console.log(response.message);
+                table.ajax.reload(null, false);
+                // loadTable('/align/all-data', 1, 10);
+            }
+        },
+        error: function (err) {
+            console.log(err)
+        }
+    });
+}
+
+function checkRow(URL,id) {
+    $.ajax({
+        url: URL+'?id='+id,
+        type: "PUT",
+        data: id,
+        success: function (response) {
+            if (response.code === 200) {
+                console.log(response.message);
+                // table.ajax.reload(null, false);
+                // loadTable('/align/all-data', 1, 10);
+            }
+        },
+        error: function (err) {
+            console.log(err)
+        }
+    });
 }
 function loadDataTextAlign() {
     var table = $('#textAlignTable').DataTable({

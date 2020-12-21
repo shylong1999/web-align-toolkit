@@ -96,6 +96,22 @@ router.put('/sortDelete', (req, res) => {
     })
 });
 
+router.put('/checkRow', (req, res) => {
+    // var obj = req.body;
+    var id = req.query.id;
+    alignRepo.isChecked(id).then(function () {
+        res.json({
+            code: 200,
+            message: 'Update oke',
+        });
+    },function (err) {
+        res.json({
+            code: 400,
+            message: 'Thất bại',
+        });
+    })
+});
+
 router.get('/getAlign', (req, res) => {
     var id = parseInt(req.query.id);
     alignRepo.loadOne(id).then(function (data) {
