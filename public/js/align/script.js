@@ -86,6 +86,7 @@ function writeToFile(URL, data) {
             if (response.code === 200) {
                 console.log(response.message)
                 // callTool('h/callTool');
+                readFile('/h/readFile');
 
             }
         },
