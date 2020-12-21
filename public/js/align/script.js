@@ -32,6 +32,7 @@ document.getElementById("extract-vb").onclick = function () {
     document.getElementById("modal_ghvb").style.display = "block";
     document.getElementById("modal_cau").style.display = "none";
     var isDeFault = $('#dlcs').is(':checked');
+    $('#saveData').addClass('hidden');
     if (isDeFault){
         // callTool('h/callTool');
 
@@ -62,7 +63,7 @@ document.getElementById("extract-cau").onclick = function (e) {
 // // PostToServer('/align/add', o, function (data) {
 // //     console.log(data);
 // // }, null, '');
-
+    $('#saveData').removeClass('hidden');
     document.getElementById("modal_cau").style.display = "block";
     document.getElementById("modal_ghvb").style.display = "none";
     console.log($('#dlcs').is(':checked'));
