@@ -69,9 +69,13 @@ document.getElementById("extract-cau").onclick = function (e) {
         var obj = {
             "viText": $('#viInput').val().trim(),
             "kmText": $('#kmInput').val().trim()
-        }
-        writeToFile('h/writeToFile',obj);
+        };
+        if (obj.viText!=='' && obj.kmText!==''){
+            writeToFile('h/writeToFile',obj);
+        }else alert("Nhập văn bản");
+
     }
+    $('#extract-cau').prop('disable', true);
     // console.log($('#dlcs1').is(':checked'));
     // loadData();
 
@@ -86,7 +90,7 @@ function writeToFile(URL, data) {
             if (response.code === 200) {
                 console.log(response.message)
                 // callTool('h/callTool');
-                readFile('/h/readFile');
+                // readFile('/h/readFile');
 
             }
         },
