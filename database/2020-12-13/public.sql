@@ -11,7 +11,7 @@
  Target Server Version : 100406
  File Encoding         : 65001
 
- Date: 21/12/2020 13:27:32
+ Date: 21/12/2020 23:45:20
 */
 
 SET NAMES utf8mb4;
@@ -31,7 +31,7 @@ CREATE TABLE `data_align`  (
   `update_date` timestamp(0) NULL DEFAULT NULL,
   `delete_date` timestamp(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2562 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2601 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for sen_align_data
@@ -49,7 +49,22 @@ CREATE TABLE `sen_align_data`  (
   `update_time` timestamp(0) NULL DEFAULT NULL,
   `delete_date` timestamp(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2596 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1039 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for text_align
+-- ----------------------------
+DROP TABLE IF EXISTS `text_align`;
+CREATE TABLE `text_align`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `lang1` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `lang2` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `score` varchar(11) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `user_id` int NOT NULL,
+  `created_date` timestamp(0) NOT NULL DEFAULT current_timestamp(0),
+  `updated_date` timestamp(0) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for users
