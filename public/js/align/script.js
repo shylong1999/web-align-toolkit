@@ -390,8 +390,22 @@ function loadData() {
         });
     });
     $('#saveData').on('click', function () {
-        var data = table.rows('.selected').data().data();
-        console.log(data);
+        // var rows = table.rows('.selected').data();
+        var rows = $( table.$('input[type="checkbox"]').map(function () {
+            return $(this).prop("checked") ?  table.row($(this).parents('tr')).data() : null;
+        } ) );
+        // var data = table.rows('.selected').data().data();
+        console.log(rows.length);
+        for (let i = 0; i < rows.length; i++) {
+            console.log(rows[i])
+            ids.push(rows[i].id);
+        }
+        // if (rows){
+        //     rows.forEach(function (row) {
+        //         ids.push(row.id);
+        //     })
+        // }
+        console.log(ids);
     })
 
 }
