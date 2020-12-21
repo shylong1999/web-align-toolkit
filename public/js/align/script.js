@@ -1,3 +1,5 @@
+var tbl;
+var table;
 function chonDLgoc() {
     document.getElementById("dlcs1").checked = false;
     document.getElementById("data-exsit").disabled = false;
@@ -34,6 +36,9 @@ document.getElementById("extract-vb").onclick = function () {
         // callTool('h/callTool');
 
         // loadData()
+        if (tbl) {
+            tbl.destroy();
+        }
         loadDataTextAlign();
         // readFile('/h/readFile');
     }else {
@@ -41,7 +46,10 @@ document.getElementById("extract-vb").onclick = function () {
             "viText": $('#viInput').val().trim(),
             "kmText": $('#kmInput').val().trim()
         }
-        writeToFile('h/writeToFile',obj);
+        if (tbl) {
+            tbl.destroy();
+        }
+        writeToFileTextAlign('align/textAlign/writeToFile',obj);
     }
 };
 
@@ -63,6 +71,9 @@ document.getElementById("extract-cau").onclick = function (e) {
         // callTool('h/callTool');
 
         // loadData()
+        if (table) {
+            table.destroy();
+        }
 
         readFile('/h/readFile');
     }else {
@@ -71,6 +82,9 @@ document.getElementById("extract-cau").onclick = function (e) {
             "kmText": $('#kmInput').val().trim()
         };
         if (obj.viText!=='' && obj.kmText!==''){
+            if (tbl) {
+                tbl.destroy();
+            }
             writeToFile('h/writeToFile',obj);
         }else alert("Nhập văn bản");
 
@@ -100,6 +114,26 @@ function writeToFile(URL, data) {
     });
 }
 
+
+function writeToFileTextAlign(URL, data) {
+    $.ajax({
+        url: URL,
+        type: "POST",
+        data: data,
+        success: function (response) {
+            if (response.code === 200) {
+                // console.log(response.message)
+                loadDataTextAlign();
+                // callTool('h/callTool');
+                // readFile('/h/readFile');
+
+            }
+        },
+        error: function (err) {
+            console.log(err)
+        }
+    });
+}
 function popupOpen() {
 
     document.getElementById("popup").style.display = "block";
@@ -184,18 +218,22 @@ function loadTable(URL, p, c) {
     });
 }
 
-function onClickPopUp(id) {
+function onClickPopUp(URL,id) {
     $('#popup').modal('show');
+    URL= URL+ '?id=' +id;
+    console.log(URL);
     $.ajax({
-        url: 'align/getAlign?id=' + id,
+        url: URL,
         type: "GET",
         success: function (response) {
+            console.log(response);
+
             if (response.code === 200) {
                 var obj = response.data[0];
                 console.log(obj);
                 $('#viText').val(obj.lang1);
                 $('#idAlign').val(obj.id);
-                $('#scoreAlign').val(obj.scope);
+                $('#scoreAlign').val(obj.score);
                 $('#kmText').val(obj.lang2);
             }
         },
@@ -234,23 +272,23 @@ function deleteRow(id, table) {
     });
 }
 
-// function deleteRow(id, table) {
-//     $.ajax({
-//         url: 'align/deleteRow?id=' + id,
-//         type: "DELETE",
-//         success: function (response) {
-//             if (response.code === 200) {
-//                 // loadTable('/align/all-data', 1, 10);
-//                 console.log("Xóa thành công");
-//                 table.ajax.reload(null, false);
-//             }
-//
-//         },
-//         error: function (err) {
-//             console.log(err)
-//         }
-//     });
-// }
+function deleteRowText(id, table) {
+    $.ajax({
+        url: 'align/textAlign/deleteText?id=' + id,
+        type: "DELETE",
+        success: function (response) {
+            if (response.code === 200) {
+                // loadTable('/align/all-data', 1, 10);
+                console.log("Xóa thành công");
+                table.ajax.reload(null, false);
+            }
+
+        },
+        error: function (err) {
+            console.log(err)
+        }
+    });
+}
 
 function updateAlign(URL, obj, table) {
     console.log("obj--->", obj);
@@ -309,7 +347,7 @@ function PostToServer(url, dataJson, callbackSuc, callbackError, buttonLoading) 
 var ids = [];
 
 function loadData() {
-    var table = $('#senAlignTable').DataTable({
+     table = $('#senAlignTable').DataTable({
         "processing": true,
         // "dom": 'lrtip',
         "language": {
@@ -382,7 +420,8 @@ function loadData() {
         // var id = $(this).attr('class');
 
         var data = table.row(this).data();
-        onClickPopUp(data.id);
+        onClickPopUp('align/getAlign',data.id);
+
         $('#saveEditing').on('click', function () {
             var obj = {
                 id: parseInt($('#idAlign').val()),
@@ -454,7 +493,7 @@ function checkRow(URL,id) {
     });
 }
 function loadDataTextAlign() {
-    var table = $('#textAlignTable').DataTable({
+    tbl = $('#textAlignTable').DataTable({
         "processing": true,
         // "dom": 'lrtip',
         "language": {
@@ -466,7 +505,7 @@ function loadDataTextAlign() {
         },
         // "scrollY": '50vh',
         // "scrollCollapse": true,
-        "ajax": "align/senAlign/getAllSenAlign",
+        "ajax": "align/textAlign/getAllTextAlign",
         'columnDefs': [
             {
                 'targets': 0,
@@ -490,7 +529,7 @@ function loadDataTextAlign() {
             },
             {"data": "lang1"},
             {"data": "lang2"},
-            {"data": "scope"},
+            {"data": "score"},
             {
                 'orderable': false,
                 'searchable': false,
@@ -499,7 +538,27 @@ function loadDataTextAlign() {
             }
         ],
     });
+    $('#textAlignTable tbody').on('click', 'tr button', function () {
+        var data = tbl.row($(this).parents('tr')).data();
+        deleteRowText(data.id, tbl);
+    });
 
+    $('#textAlignTable tbody').on('click', 'tr td:not(:last-child):not(:first-child)', function () {
+        // var id = $(this).attr('class');
+
+        var data = tbl.row(this).data();
+        onClickPopUp('align/textAlign/getTextAlign',data.id);
+        $('#saveEditing').on('click', function () {
+            var obj = {
+                id: parseInt($('#idAlign').val()),
+                viText: $('#viText').val().trim(),
+                kmText: $('#kmText').val().trim(),
+                scope: $('#scoreAlign').val()
+            }
+            updateAlign('align/textAlign/updateText', obj, tbl);
+
+        });
+    });
 
 }
 
