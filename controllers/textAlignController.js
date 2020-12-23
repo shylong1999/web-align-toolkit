@@ -190,7 +190,8 @@ router.get('/getTextAlign', (req, res) => {
 router.post('/addText', (req, res) => {
     var obj = req.body;
     console.log(obj);
-    var value = [obj.lang1, obj.lang2, obj.scope, 1];
+    var creator_id = 1;
+    var value = [obj.lang1, obj.lang2,obj.text1,obj.text2, obj.scope, creator_id,1];
     textAlignRepo.addRow(value).then(function () {
         res.json({
             code: 200,
@@ -205,7 +206,11 @@ router.post('/addText', (req, res) => {
 });
 router.put('/updateText', (req, res) => {
     var obj = req.body;
-    textAlignRepo.updateRow(obj).then(function () {
+    var o = {
+        id: obj.id,
+        status: 2
+    }
+    textAlignRepo.updateRow(o).then(function () {
         res.json({
             code: 200,
             message: 'Update oke',
@@ -221,11 +226,14 @@ router.put('/updateText', (req, res) => {
 router.delete('/deleteText', (req, res) => {
     var id = req.query.id;
     console.log(id);
-    textAlignRepo.deleteRow(id).then(function (data) {
-        console.log(data);
+    var o = {
+        id: id,
+        status: 3
+    }
+    textAlignRepo.updateRow(o).then(function () {
         res.json({
             code: 200,
-            message: 'DElete oke',
+            message: 'Update oke',
         });
     },function (err) {
         res.json({

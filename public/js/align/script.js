@@ -55,14 +55,6 @@ document.getElementById("extract-vb").onclick = function () {
 };
 
 document.getElementById("extract-cau").onclick = function (e) {
-//     $('#tbody').append('');
-
-//     e.preventDefault();
-//     callTool('/h/callFile');
-//     readFile('/h/readFile');
-// // PostToServer('/align/add', o, function (data) {
-// //     console.log(data);
-// // }, null, '');
     $('#saveData').removeClass('hidden');
     document.getElementById("modal_cau").style.display = "block";
     document.getElementById("modal_ghvb").style.display = "none";
@@ -75,8 +67,8 @@ document.getElementById("extract-cau").onclick = function (e) {
         if (table) {
             table.destroy();
         }
-
-        readFile('/h/readFile');
+        loadData();
+        // readFile('/h/readFile');
     }else {
         var obj = {
             "viText": $('#viInput').val().trim(),
@@ -102,6 +94,7 @@ function writeToFile(URL, data) {
         type: "POST",
         data: data,
         success: function (response) {
+            console.log(response);
             if (response.code === 200) {
                 console.log(response.message)
                 // callTool('h/callTool');
@@ -232,10 +225,10 @@ function onClickPopUp(URL,id) {
             if (response.code === 200) {
                 var obj = response.data[0];
                 console.log(obj);
-                $('#viText').val(obj.lang1);
+                $('#viText').val(obj.text1);
                 $('#idAlign').val(obj.id);
                 $('#scoreAlign').val(obj.score);
-                $('#kmText').val(obj.lang2);
+                $('#kmText').val(obj.text2);
             }
         },
         error: function (err) {
@@ -245,25 +238,23 @@ function onClickPopUp(URL,id) {
 
 }
 
-$('#').on('click', function () {
-    $('table tr').each(function (a, b) {
-        console.log(a, b);
-
-
-    });
-})
-
 
 function deleteRow(id, table) {
+    var obj = {
+        id: id,
+        status: 3
+    }
     $.ajax({
         // url: 'align/deleteRow?id=' + id,
-        url: 'align/sortDelete?id=' + id,
+        url: 'align/sortDelete',
         type: "PUT",
+        data: obj,
         success: function (response) {
             if (response.code === 200) {
                 // loadTable('/align/all-data', 1, 10);
                 console.log("Xóa thành công");
-                table.ajax.reload(null, false);
+                console.log(response.message);
+                table.ajax.reload(null,false);
             }
 
         },
@@ -293,6 +284,10 @@ function deleteRowText(id, table) {
 
 function updateAlign(URL, obj, table) {
     console.log("obj--->", obj);
+    var o = {
+        id: obj.id,
+        status: 2
+    }
     $.ajax({
         url: URL,
         type: "PUT",
@@ -300,6 +295,27 @@ function updateAlign(URL, obj, table) {
         success: function (response) {
             if (response.code === 200) {
                 console.log(response.message)
+                copyRow('align/addRow',obj);
+            }
+        },
+        error: function (err) {
+            console.log(err)
+        }
+    });
+}
+
+function copyRow(URL,obj) {
+    console.log(URL)
+    console.log(obj)
+    $.ajax({
+        url: URL,
+        type: "POST",
+        data: obj,
+        success: function (response) {
+            console.log(response)
+            if (response.code === 200) {
+                console.log(response.message)
+                console.log("copy oke");
                 table.ajax.reload(null, false);
                 // loadTable('/align/all-data', 1, 10);
             }
@@ -309,7 +325,6 @@ function updateAlign(URL, obj, table) {
         }
     });
 }
-
 function PostToServer(url, dataJson, callbackSuc, callbackError, buttonLoading) {
     $('div.pace').removeClass().addClass('pace  pace-active');
     var o = {};
@@ -360,7 +375,7 @@ function loadData() {
         },
         // "scrollY": '50vh',
         // "scrollCollapse": true,
-        "ajax": "align/all-data",
+        "ajax": "align/allDraft",
         'columnDefs': [
             {
                 'targets': 0,
@@ -382,9 +397,10 @@ function loadData() {
                 className: 'select-checkbox',
                 orderable: false
             },
-            {"data": "lang1"},
-            {"data": "lang2"},
-            {"data": "scope"},
+            {"data": "text1"},
+            {"data": "text2"},
+            {"data": "score"},
+            {"data": "status_name"},
             {
                 'orderable': false,
                 'searchable': false,
@@ -407,6 +423,7 @@ function loadData() {
     });
     $('#senAlignTable tbody').on('click', 'tr button', function () {
         var data = table.row($(this).parents('tr')).data();
+        console.log(data);
         deleteRow(data.id, table);
     });
     // $('#senAlignTable tbody').on('click', 'tr td:first-child', function () {
@@ -430,7 +447,7 @@ function loadData() {
                 kmText: $('#kmText').val().trim(),
                 scope: $('#scoreAlign').val()
             }
-            updateAlign('align/updateRow', obj, table);
+            updateAlign('align/updateStatus', obj, table);
 
         });
     });
@@ -443,22 +460,22 @@ function loadData() {
         console.log(rows.length);
         for (let i = 0; i < rows.length; i++) {
             console.log(rows[i])
-            checkRow('align/checkRow',rows[i].id);
+            // checkRow('align/checkRow',rows[i].id);
             ids.push({id:rows[i].id});
         }
         var obj ={
             data : ids
         }
+        console.log(obj);
 
-        copyItem('align/senAlign/copyItem',obj,table);
-        // console.log(ids);
+        saveManyRow('align/saveManySentences',obj,table);
 
 
     })
 
 }
 
-function copyItem(URL,ids,table) {
+function saveManyRow(URL,ids,table) {
     $.ajax({
         url: URL,
         type: "POST",
@@ -467,7 +484,6 @@ function copyItem(URL,ids,table) {
             if (response.code === 200) {
                 console.log(response.message);
                 table.ajax.reload(null, false);
-                // loadTable('/align/all-data', 1, 10);
             }
         },
         error: function (err) {
@@ -484,8 +500,6 @@ function checkRow(URL,id) {
         success: function (response) {
             if (response.code === 200) {
                 console.log(response.message);
-                // table.ajax.reload(null, false);
-                // loadTable('/align/all-data', 1, 10);
             }
         },
         error: function (err) {
@@ -535,7 +549,7 @@ function loadDataTextAlign() {
                 'orderable': false,
                 'searchable': false,
                 'className': 'center', //class của từng ô trong cột, tính cả ô trong thead và tfoot
-                'defaultContent': '<button type="button" class="btn btn-danger">Bỏ</button>'
+                'defaultContent': '<button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Bỏ</button>'
             }
         ],
     });

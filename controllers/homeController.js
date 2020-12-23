@@ -178,10 +178,11 @@ router.get('/readFile', (req, res) => {
                 "line": idx,
                 "lang": 'vi-km',
                 "score": (parseFloat(line.split('\t')[0]) * 100).toFixed(2),
+                "status": 1,
                 "lang1": line.split('\t')[1],
                 "lang2": line.split('\t')[2],
             }
-            if (obj.score > 0.8 && obj.lang1 && obj.lang2){
+            if (obj.lang1 && obj.lang2){
                 data.push(obj);
                 idx++;
             }
@@ -197,13 +198,13 @@ router.get('/readFile', (req, res) => {
     });
 
     promise.then((resolveResult) => {
-        // console.log(resolveResult);
         var values = [];
         if (resolveResult){
             resolveResult.forEach(function (obj) {
-                var item = [obj.lang1,obj.lang2,obj.score,1];
+                var item = [obj.lang1,obj.lang2,obj.score,obj.status,1,0];
                 values.push(item);
             })
+            console.log(values);
             alignRepo.addMultiple(values).then(function () {
                 res.json({
                     code: 200,
@@ -216,8 +217,6 @@ router.get('/readFile', (req, res) => {
                 });
             });
         }
-        // var value = [obj.lang1, obj.lang2, obj.scope, 1];
-
     });
 });
 
