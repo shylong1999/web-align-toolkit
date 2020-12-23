@@ -20,6 +20,15 @@ exports.updateStatus = (obj) => {
     let query = mysql.format(sql, ["para_sentences","status",obj.status,"updated_date",date,"id", obj.id]);
     return db.save(query);
 };
+exports.updateRate = (obj) => {
+    console.log("obj",obj);
+    var currentTime = (new Date().getTime() + 7*3600*1000);
+    var date = new Date(currentTime).toISOString();
+    var sql = "UPDATE ?? SET ?? = ?, ?? = ? WHERE ?? = ?";
+    let query = mysql.format(sql, ["para_sentences","rate_id",obj.rate_id,"updated_date",date,"id", obj.id]);
+    return db.save(query);
+};
+
 
 exports.saveAll = (ids) => {
     var sql = "UPDATE ?? SET ?? = ? WHERE ?? IN"+ids;
@@ -45,10 +54,10 @@ exports.loadDraftSentences = (options) => {
     var sql;
     let query;
     if (options.offset && options.limit) {
-        sql = "SELECT P.*,S.name as status_name FROM para_sentences P JOIN sentence_status S ON P.status = S.id WHERE P.status = ? ORDER BY P.created_date DESC LIMIT ? OFFSET ?";
+        sql = "SELECT P.*,S.name as status_name, R.name as rate_name FROM para_sentences P JOIN sentence_status S ON P.status = S.id LEFT JOIN rates R ON R.id = P.rate_id WHERE P.status = ? ORDER BY P.created_date DESC LIMIT ? OFFSET ?";
         query = mysql.format(sql, [1,options.limit, options.offset]);
     } else {
-        sql = "SELECT P.*,S.name as status_name FROM para_sentences P JOIN sentence_status S ON P.status = S.id WHERE P.status = ? ORDER BY P.created_date DESC";
+        sql = "SELECT P.*,S.name as status_name, R.name as rate_name FROM para_sentences P JOIN sentence_status S ON P.status = S.id LEFT JOIN rates R ON R.id = P.rate_id WHERE P.status = ? ORDER BY P.created_date DESC";
         query = mysql.format(sql, [1]);
     }
 

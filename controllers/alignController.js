@@ -100,6 +100,22 @@ router.put('/updateStatus', (req, res) => {
     })
 });
 
+
+router.put('/updateStatus', (req, res) => {
+    var obj = req.body;
+    alignRepo.updateRate(obj).then(function () {
+        res.json({
+            code: 200,
+            message: 'Update oke',
+        });
+    },function (err) {
+        res.json({
+            code: 400,
+            message: 'Thất bại',
+        });
+    })
+});
+
 router.put('/sortDelete', (req, res) => {
     var obj = req.body;
     alignRepo.updateStatus(obj).then(function () {
