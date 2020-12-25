@@ -7,6 +7,8 @@ var fs = require('fs');
 const path = require('path');
 const {PythonShell} = require('python-shell');
 // var sleep = require('sleep');
+let multer = require("multer");
+let formidable = require("formidable");
 
 var readline = require('readline');
 router.get('/login', (req, res) => {
@@ -21,11 +23,11 @@ router.get('/callFile', (req, res) => {
         mode: 'text',
         pythonOptions: ['-u'], // get print results in real-time
         scriptPath: basePath, //If you are having python_test.py script in same folder, then it's optional.
-        args: ['-s', basePath+'vi.txt','-t',basePath+'km.txt','-o',basePath+'vi_km.txt','-lang','km', '-thres', '0.6'] //An argument which can be accessed in the script using sys.argv[1]
+        args: ['-s', basePath + 'vi.txt', '-t', basePath + 'km.txt', '-o', basePath + 'vi_km.txt', '-lang', 'km', '-thres', '0.6'] //An argument which can be accessed in the script using sys.argv[1]
     };
 
 
-    PythonShell.run('senalign.py', options, function (err, result){
+    PythonShell.run('senalign.py', options, function (err, result) {
         if (err) {
 
             console.log(err);
@@ -57,11 +59,11 @@ router.get('/callTextAlign', (req, res) => {
         mode: 'text',
         pythonOptions: ['-u'], // get print results in real-time
         scriptPath: basePath, //If you are having python_test.py script in same folder, then it's optional.
-        args: [basePath+'vn.txt',basePath+'khmer.txt','km'] //An argument which can be accessed in the script using sys.argv[1]
+        args: [basePath + 'vn.txt', basePath + 'khmer.txt', 'km'] //An argument which can be accessed in the script using sys.argv[1]
     };
 
 
-    PythonShell.run('document_alignment.py', options, function (err, result){
+    PythonShell.run('document_alignment.py', options, function (err, result) {
         if (err) {
 
             console.log(err);
@@ -84,7 +86,6 @@ router.get('/callTextAlign', (req, res) => {
     });
 
 });
-
 
 
 // router.post('/writeToFile', (req, res) => {
@@ -132,7 +133,6 @@ router.get('/callTextAlign', (req, res) => {
 // });
 
 
-
 router.post('/writeToFile', (req, res) => {
     var viText = req.body.viText;
     var kmText = req.body.kmText;
@@ -162,9 +162,60 @@ router.post('/writeToFile', (req, res) => {
 
 });
 
+var mime = require('mime');
+
+router.get('/dow',(req, res) => {
+    var fileLocation = path.join('public/txt/out_km.txt');
+    console.log(fileLocation);
+    res.download(fileLocation);
+});
+router.post('/importFile', (req, res) => {
+    let form = new formidable.IncomingForm();
+    // Cấu hình thư mục sẽ chứa file trên server với hàm .uploadDir
+    // form.uploadDir = "uploads/"
+    console.log("alo")
+    form.uploadDir = "public/txt/"
+    // Xử lý upload file với hàm .parse
+    form.parse(req, (err, fields, files) => {
+        if (err) throw err;
+        // Lấy ra đường dẫn tạm của tệp tin trên server
+        let tmpPath = files.file.path;
+        // Khởi tạo đường dẫn mới, mục đích để lưu file vào thư mục uploads của chúng ta
+        let newPath = form.uploadDir + files.file.name;
+        // Đổi tên của file tạm thành tên mới và lưu lại
+        fs.rename(tmpPath, newPath, (err) => {
+            if (err) throw err;
+            console.log("ablo")
+            console.log(files.file.type);
+            switch (files.file.type) {
+                // Kiểm tra nếu như là file ảnh thì render ảnh và hiển thị lên.
+                case "text/plain":
+                    console.log("ablo12321")
+
+                    res.writeHead(200, {"Content-Type": "text/html"});
+                    res.end(files.file.name);
+                    break;
+                case "image/jpeg":
+                    fs.readFile(newPath, (err, fileUploaded) => {
+                        res.writeHead(400, {"Content-type": "image/jpeg"});
+                        res.end(fileUploaded);
+                    });
+                    break;
+                // Còn lại các loại file khác thì chỉ hiển thị nội dung thông báo upload thành công.
+                default:
+                    res.writeHead(400, {"Content-Type": "text/html"});
+                    res.end(files.file.name);
+                    break;
+            }
+        });
+    });
+});
+
 
 router.get('/readFile', (req, res) => {
+    var fileName = req.query.fileName;
 
+    if(fileName)   console.log(fileName);
     var promise = new Promise(function (resolve, reject) {
 
         var data = [];
@@ -182,7 +233,7 @@ router.get('/readFile', (req, res) => {
                 "lang1": line.split('\t')[1],
                 "lang2": line.split('\t')[2],
             }
-            if (obj.lang1 && obj.lang2){
+            if (obj.lang1 && obj.lang2) {
                 data.push(obj);
                 idx++;
             }
@@ -199,18 +250,18 @@ router.get('/readFile', (req, res) => {
 
     promise.then((resolveResult) => {
         var values = [];
-        if (resolveResult){
+        if (resolveResult) {
             resolveResult.forEach(function (obj) {
-                var item = [obj.lang1,obj.lang2,obj.score,obj.status,1,0];
+                var item = [obj.lang1, obj.lang2, obj.score, obj.status, 1, 0];
                 values.push(item);
             })
-            console.log(values);
+            // console.log(values);
             alignRepo.addMultiple(values).then(function () {
                 res.json({
                     code: 200,
                     message: 'Thành công',
                 });
-            },function (err) {
+            }, function (err) {
                 res.json({
                     code: 400,
                     message: 'Error',

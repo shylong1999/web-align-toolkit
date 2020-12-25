@@ -63,6 +63,19 @@ exports.loadDraftSentences = (options) => {
 
     return db.load(query);
 };
+exports.loadBestSentences = (options) => {
+    var sql;
+    let query;
+    if (options.offset && options.limit) {
+        sql = "SELECT P.*,S.name as status_name, R.name as rate_name FROM para_sentences P JOIN sentence_status S ON P.status = S.id LEFT JOIN rates R ON R.id = P.rate_id WHERE P.status = ? ORDER BY P.created_date DESC LIMIT ? OFFSET ?";
+        query = mysql.format(sql, [2,options.limit, options.offset]);
+    } else {
+        sql = "SELECT P.*,S.name as status_name, R.name as rate_name FROM para_sentences P JOIN sentence_status S ON P.status = S.id LEFT JOIN rates R ON R.id = P.rate_id WHERE P.status = ? ORDER BY P.created_date DESC";
+        query = mysql.format(sql, [2]);
+    }
+
+    return db.load(query);
+};
 exports.loadAll = (options) => {
     var sql;
     let query;

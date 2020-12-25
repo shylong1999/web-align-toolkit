@@ -9,6 +9,7 @@ router.get('/', (req, res) => {
 });
 
 
+
 router.post('/add', (req, res) => {
     var value = req.body.value;
     alignRepo.addMultiple(value).then(function () {
@@ -67,6 +68,42 @@ router.get('/allDraft', (req, res) => {
         });
     });
 });
+var fs = require('fs');
+
+router.get('/allBest', (req, res) => {
+    console.log(req.query);
+    var option = {
+        offset: parseInt(req.query.p),
+        limit: parseInt(req.query.c),
+    };
+    var alignments = alignRepo.loadBestSentences(option);
+    var counter = alignRepo.count();
+    Promise.all([alignments, counter]).then(([pAlign, countRows]) => {
+        var count = parseInt(countRows[0].total);
+        var data = '';
+        if (pAlign){
+            pAlign.forEach(function (item) {
+                data = data + item.score + '\t' + item.text1 + '\t' + item.text2 + '\n';
+            })
+        }
+        console.log(data);
+
+        fs.writeFile('./public/txt/out_km.txt',data , (err) => {
+            if (err) throw err;
+            res.json({
+                code: 200,
+                message: "oke"
+            });
+
+        });
+    },function (err) {
+        res.json({
+            code: 200,
+            message: "Error"
+        });
+    });
+});
+
 
 router.post('/addRow', (req, res) => {
     var obj = req.body;

@@ -303,6 +303,102 @@ function updateAlign(URL, obj, table) {
         }
     });
 }
+function download(filename, text) {
+    var pom = document.createElement('a');
+    pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    pom.setAttribute('download', filename);
+
+    if (document.createEvent) {
+        var event = document.createEvent('MouseEvents');
+        event.initEvent('click', true, true);
+        pom.dispatchEvent(event);
+    }
+    else {
+        pom.click();
+    }
+}
+function loadAndFile(URL){
+    $.ajax({
+        type: "GET",
+
+        url: URL,
+
+        success: function (data,xhr,result) {
+            console.log(data)
+            download('text.txt',data)
+
+        },
+        error: function (e) {
+
+            // $("#result").text(e.responseText);
+            // console.log("ERROR : ", e);
+            // $("#btnSubmit").prop("disabled", false);
+
+        }
+    });
+}
+$('#exportFile').click(function(e) {
+    // e.preventDefault();  //stop the browser from following
+    // window.location.href = 'public/txt/out_km1.txt';
+    $.ajax({
+        type: "GET",
+
+        url: "/align/allBest",
+
+        success: function (data,xhr,result) {
+            console.log(data)
+            if (data.code === 200){
+                loadAndFile('/h/dow');
+            }
+            // download('text.txt',data)
+
+        },
+        error: function (e) {
+
+            // $("#result").text(e.responseText);
+            // console.log("ERROR : ", e);
+            // $("#btnSubmit").prop("disabled", false);
+
+        }
+    });
+});
+
+$('#submitFile').on('click',function () {
+    var form = $('#fileUploadForm')[0];
+    console.log("form",form);
+
+    var data = new FormData(form);
+    console.log("data",data);
+    $.ajax({
+        type: "POST",
+        enctype: 'multipart/form-data',
+        url: "/h/importFile",
+        data: data,
+        processData: false,
+        contentType: false,
+        cache: false,
+        timeout: 600000,
+        success: function (data,file,result) {
+            console.log(data);
+            console.log(file);
+            console.log(result);
+            if (result.status === 200){
+                $("#example-input-file").val(null);
+                readFile('/h/readFile?fileName='+file)
+            }else alert("chonj lai file");
+
+
+        },
+        error: function (e) {
+            console.log("e",e);
+            alert("chonj lai file");
+            // $("#result").text(e.responseText);
+            // console.log("ERROR : ", e);
+            // $("#btnSubmit").prop("disabled", false);
+
+        }
+    });
+});
 
 function copyRow(URL,obj) {
     console.log(URL)
@@ -362,6 +458,18 @@ function PostToServer(url, dataJson, callbackSuc, callbackError, buttonLoading) 
 };
 var ids = [];
 
+function exportTo(type) {
+
+    $('#modal_cau').tableExport({
+        filename: 'table_%DD%-%MM%-%YY%',
+        format: type,
+        cols: '4,2,3',
+        head_delimiter:'\t',
+        column_delimiter:'\t',
+    });
+
+}
+
 function loadData() {
      table = $('#senAlignTable').DataTable({
         "processing": true,
@@ -385,6 +493,18 @@ function loadData() {
                 'render': function (data, type, full, meta) {
                     return '<input type="checkbox" name="id[]" value="' + $('<div/>').text(data).html() + '">';
                 }
+
+            },
+            {
+                'targets': 6,
+                'searchable': false,
+                'orderable': false,
+                'className': 'dt-body-center',
+                'render': function (data, type, full, meta) {
+                    // return '<input type="checkbox" name="id[]" value="' + $('<div/>').text(data).html() + '">';
+                    return `<select><option value="">zz</option><option value="">vv</option></select> `;
+                }
+
             }],
         "select": {
             "style": 'os',
@@ -528,7 +648,8 @@ function loadDataTextAlign() {
                 'orderable': false,
                 'className': 'dt-body-center',
                 'render': function (data, type, full, meta) {
-                    return '<input type="checkbox" name="id[]" value="' + $('<div/>').text(data).html() + '">';
+                    // return '<input type="checkbox" name="id[]" value="' + $('<div/>').text(data).html() + '">';
+                    return `<select><option value="">zz</option><option value="">vv</option></select> `;
                 }
             }],
         "select": {
